@@ -43,56 +43,13 @@
       padding: 0 18px;
     }
 
-    .top-card {
-      background: white;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-      margin-bottom: 25px;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 20px;
-      align-items: center;
-    }
-
-    .top-card h2 {
-      color: #4f46e5;
-      margin-bottom: 10px;
-      font-size: 26px;
-    }
-
-    .top-card p {
-      line-height: 1.8;
-      font-size: 17px;
-    }
-
-    .progress-box {
-      background: #f3f4f6;
-      border-radius: 20px;
-      padding: 18px;
-      text-align: center;
-    }
-
-    .progress-box strong {
-      display: block;
-      font-size: 32px;
-      color: #9333ea;
-      margin-bottom: 5px;
-    }
-
-    .progress-bar {
-      height: 12px;
-      background: #e5e7eb;
-      border-radius: 20px;
-      margin-top: 12px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #4f46e5, #9333ea);
-      transition: 0.4s;
+    .nav-bar {
+      max-width: 1150px;
+      margin: 20px auto;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .layout {
@@ -116,8 +73,8 @@
       color: #111827;
     }
 
-    .lesson-btn {
-      width: 100%;
+    .lesson-btn,
+    .nav-page-btn {
       border: none;
       background: #f3f4f6;
       padding: 13px;
@@ -130,8 +87,19 @@
       color: #1f2937;
     }
 
+    .lesson-btn {
+      width: 100%;
+    }
+
+    .nav-page-btn {
+      width: auto;
+      min-width: 130px;
+      text-align: center;
+    }
+
     .lesson-btn:hover,
-    .lesson-btn.active {
+    .lesson-btn.active,
+    .nav-page-btn:hover {
       background: linear-gradient(135deg, #4f46e5, #9333ea);
       color: white;
       transform: translateY(-2px);
@@ -178,11 +146,14 @@
       font-size: 15px;
       line-height: 1.7;
       white-space: pre-wrap;
+      font-family: Consolas, monospace;
     }
 
     .activity-box,
     .quiz-box,
-    .challenge-box {
+    .challenge-box,
+    .code-runner,
+    .final-test-box {
       border-radius: 20px;
       padding: 18px;
       margin-top: 18px;
@@ -190,6 +161,11 @@
 
     .activity-box {
       background: #eef2ff;
+    }
+
+    .terms-box {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
     }
 
     .quiz-box {
@@ -200,13 +176,24 @@
       background: #ecfdf5;
     }
 
+    .code-runner {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+    }
+
+    .final-test-box {
+      background: #fefce8;
+      border: 1px solid #fde68a;
+    }
+
     .box-title {
       font-weight: bold;
       margin-bottom: 10px;
       font-size: 18px;
     }
 
-    .answers button {
+    .answers button,
+    .final-option {
       display: block;
       width: 100%;
       margin: 8px 0;
@@ -220,7 +207,8 @@
       transition: 0.2s;
     }
 
-    .answers button:hover {
+    .answers button:hover,
+    .final-option:hover {
       background: #f3f4f6;
     }
 
@@ -229,21 +217,60 @@
       font-weight: bold;
     }
 
-    .complete-btn {
-      margin-top: 22px;
-      background: linear-gradient(135deg, #16a34a, #22c55e);
+    .complete-btn,
+    .run-btn,
+    .final-btn {
+      margin-top: 12px;
       color: white;
       border: none;
-      padding: 14px 22px;
-      border-radius: 16px;
+      padding: 12px 20px;
+      border-radius: 14px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 15px;
       transition: 0.2s;
     }
 
-    .complete-btn:hover {
+    .complete-btn {
+      margin-top: 22px;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+    }
+
+    .run-btn,
+    .final-btn {
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+    }
+
+    .complete-btn:hover,
+    .run-btn:hover,
+    .final-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.25);
+    }
+
+    .code-runner textarea {
+      width: 100%;
+      min-height: 160px;
+      border-radius: 14px;
+      border: 1px solid #d1d5db;
+      padding: 14px;
+      direction: ltr;
+      text-align: left;
+      font-size: 15px;
+      font-family: Consolas, monospace;
+      resize: vertical;
+      background: white;
+    }
+
+    .output-box {
+      margin-top: 12px;
+      background: #111827;
+      color: #d1fae5;
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 50px;
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+      font-family: Consolas, monospace;
     }
 
     .footer-note {
@@ -254,7 +281,6 @@
     }
 
     @media (max-width: 850px) {
-      .top-card,
       .layout {
         grid-template-columns: 1fr;
       }
@@ -276,22 +302,10 @@
   </header>
 
   <main class="container">
-    <section class="top-card">
-      <div>
-        <h2>أهلاً بكم في موقع التعلم</h2>
-        <p>
-          هذا الموقع يساعد الطلاب على فهم أساسيات JavaScript بطريقة بسيطة وتفاعلية.
-          اختاروا درسًا من القائمة، اقرأوا الشرح، جرّبوا المثال، ثم أجيبوا عن السؤال وأنهوا التحدي.
-        </p>
-      </div>
-      <div class="progress-box">
-        <strong id="progressNumber">0%</strong>
-        <span>نسبة إنجاز الدروس</span>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-      </div>
-    </section>
+    <nav class="nav-bar">
+      <button type="button" id="homeButton" class="nav-page-btn">🏠 الرئيسية</button>
+      <button type="button" id="finalButton" class="nav-page-btn">📝 الاختبار النهائي</button>
+    </nav>
 
     <section class="layout">
       <aside class="lessons-list">
@@ -302,17 +316,26 @@
       <section class="lesson-content" id="lessonContent"></section>
     </section>
 
+    <!-- أزرار التنقل تحت المحتوى بشكل واضح -->
+    <div class="nav-bar" style="margin-top:20px">
+      <button type="button" id="prevButton" class="nav-page-btn">⬅️ السابق</button>
+      <button type="button" id="nextButton" class="nav-page-btn">➡️ التالي</button>
+    </div>
+
     <p class="footer-note">تم إعداد الموقع كنسخة تعليمية أولية قابلة للتطوير والإضافة.</p>
   </main>
 
   <script>
+    "use strict";
+
     const lessons = [
-      { title: "مقدمة JavaScript",
+      {
+        title: "مقدمة JavaScript",
         tag: "الوحدة 1",
-        explanation: `JavaScript هي لغة برمجة تُستخدم لإضافة التفاعل داخل المواقع. عندما نتعلم HTML فنحن نبني هيكل الصفحة، وعندما نتعلم CSS فنحن نصمم شكل الصفحة، أما JavaScript فهي التي تجعل الصفحة تتحرك وتتفاعل مع المستخدم. من خلال JavaScript نستطيع عرض رسالة، استقبال اسم الطالب، تغيير لون عنصر، تشغيل لعبة، فحص إجابة، أو بناء تحديات تعليمية.`,
-        code: `alert('أهلاً بكم في عالم JavaScript');
-console.log('هذه رسالة تظهر للمطور');`,
-        activity: "ناقشوا مع الطلاب: أين نرى JavaScript في حياتنا اليومية؟ أمثلة: زر تسجيل الدخول، لعبة، اختبار إلكتروني، سلة مشتريات، أو تغيير صورة عند الضغط.",
+        explanation: "JavaScript هي لغة برمجة تُستخدم لإضافة التفاعل داخل المواقع. من خلالها نستطيع عرض رسالة، استقبال معلومات من المستخدم، تغيير محتوى الصفحة، فحص إجابة، أو بناء لعبة بسيطة.",
+        terms: "JavaScript: لغة برمجة تضيف تفاعل للموقع. alert: أمر يعرض رسالة للمستخدم. console.log: أمر يعرض رسالة داخل أدوات المطور.",
+        code: "alert('أهلاً بكم في عالم JavaScript');\nconsole.log('هذه رسالة تظهر للمطور');",
+        activity: "اذكروا أمثلة لمواقع فيها تفاعل مثل: زر تسجيل الدخول، لعبة، اختبار إلكتروني، أو سلة مشتريات.",
         questions: [
           { q: "ما وظيفة JavaScript في الموقع؟", a: ["تصميم الألوان فقط", "إضافة التفاعل", "كتابة النصوص فقط"], c: 1 },
           { q: "أي أمر يعرض رسالة للمستخدم؟", a: ["console.log", "alert", "let"], c: 1 },
@@ -323,12 +346,10 @@ console.log('هذه رسالة تظهر للمطور');`,
       {
         title: "المتغيرات والثوابت",
         tag: "الوحدة 2",
-        explanation: `المتغيرات والثوابت هي طريقة لحفظ المعلومات داخل البرنامج. المتغير يشبه صندوقًا نحفظ فيه قيمة ويمكن أن تتغير أثناء تشغيل الموقع، مثل اسم الطالب أو عدد النقاط. نستخدم let عندما نريد تعريف متغير قابل للتغيير. أما الثابت فهو قيمة لا نريد تغييرها، مثل اسم المشروع أو عدد أيام الأسبوع، ونستخدم const لتعريفه.`,
-        code: `let studentName = 'Amina';
-let points = 10;
-const PROJECT_NAME = 'Neta';
-console.log(studentName + ' لديها ' + points + ' نقاط');`,
-        activity: "اكتبوا أمثلة من حياتنا: معلومات تتغير مثل العمر والنقاط، ومعلومات ثابتة مثل اسم الفرع أو اسم الدورة.",
+        explanation: "المتغيرات والثوابت هي طريقة لحفظ المعلومات داخل البرنامج. المتغير يحفظ قيمة يمكن تغييرها مثل اسم الطالب أو عدد النقاط، والثابت يحفظ قيمة لا نريد تغييرها مثل اسم المشروع.",
+        terms: "let: لتعريف متغير قابل للتغيير. const: لتعريف ثابت لا يتغير. variable: متغير. constant: ثابت.",
+        code: "let studentName = 'Amina';\nlet points = 10;\nconst PROJECT_NAME = 'Neta';\nconsole.log(studentName + ' لديها ' + points + ' نقاط');",
+        activity: "صنفوا المعلومات التالية إلى متغير أو ثابت: اسم الطالب، عدد النقاط، اسم الفرع، اسم المشروع.",
         questions: [
           { q: "أي كلمة نستخدم لتعريف متغير؟", a: ["let", "const", "alert"], c: 0 },
           { q: "أي كلمة نستخدم لتعريف ثابت؟", a: ["prompt", "const", "console"], c: 1 },
@@ -339,11 +360,9 @@ console.log(studentName + ' لديها ' + points + ' نقاط');`,
       {
         title: "أنواع القيم: Number و String",
         tag: "الوحدة 3",
-        explanation: `في JavaScript توجد أنواع مختلفة من القيم. النوع number يُستخدم للأرقام، مثل العمر، العلامة، عدد الطلاب، أو السعر. نستطيع إجراء عمليات حسابية على الأرقام. النوع string يُستخدم للنصوص والكلمات والجمل، ويجب كتابته بين علامات اقتباس. علامة + مع الأرقام تعني جمعًا حسابيًا، أما مع النصوص فتعني ربط النصوص معًا.`,
-        code: `let age = 15;
-let studentName = 'Sara';
-let sentence = studentName + ' عمرها ' + age + ' سنة';
-console.log(sentence);`,
+        explanation: "في JavaScript توجد أنواع مختلفة من القيم. النوع number يُستخدم للأرقام، والنوع string يُستخدم للنصوص والكلمات والجمل. علامة + تجمع الأرقام، لكنها تربط النصوص معًا.",
+        terms: "number: قيمة رقمية. string: قيمة نصية. + مع الأرقام تعني جمع، ومع النصوص تعني ربط.",
+        code: "let age = 15;\nlet studentName = 'Sara';\nlet sentence = studentName + ' عمرها ' + age + ' سنة';\nconsole.log(sentence);",
         activity: "اعرضوا قيماً مختلفة واسألوا الطلاب: هل هذه Number أم String؟ مثل: 17، '17'، 'Neta'، 90.",
         questions: [
           { q: "ما نوع القيمة 25؟", a: ["string", "number", "boolean"], c: 1 },
@@ -355,10 +374,9 @@ console.log(sentence);`,
       {
         title: "Boolean و Modulo",
         tag: "الوحدة 4",
-        explanation: `Boolean هو نوع قيمة له احتمالان فقط: true أو false. نستخدمه عندما نريد فحص شرط، مثل: هل الطالب ناجح؟ هل العدد أكبر من 10؟ أما العامل modulo ورمزه % فيعطينا باقي القسمة. إذا كان باقي قسمة العدد على 2 يساوي 0، فهذا يعني أن العدد زوجي.`,
-        code: `let number = 8;
-let isEven = number % 2 === 0;
-console.log(isEven);`,
+        explanation: "Boolean هو نوع قيمة له احتمالان فقط: true أو false. أما العامل modulo ورمزه % فيعطينا باقي القسمة، ونستخدمه مثلًا لمعرفة إذا كان العدد زوجيًا أو فرديًا.",
+        terms: "boolean: قيمة منطقية true أو false. modulo %: يعطينا باقي القسمة. ===: مقارنة بين قيمتين.",
+        code: "let number = 8;\nlet isEven = number % 2 === 0;\nconsole.log(isEven);",
         activity: "اختاروا أرقامًا مختلفة، وافحصوا هل هي زوجية أم فردية باستخدام باقي القسمة.",
         questions: [
           { q: "ما القيم الممكنة في Boolean؟", a: ["yes و no", "true و false", "1 و 2 فقط"], c: 1 },
@@ -370,13 +388,9 @@ console.log(isEven);`,
       {
         title: "الجمل الشرطية if / else",
         tag: "الوحدة 5",
-        explanation: `الجمل الشرطية تجعل البرنامج يتخذ قرارًا حسب الحالة. نستخدم if عندما نريد تنفيذ أمر إذا كان الشرط صحيحًا. ونستخدم else عندما نريد تنفيذ أمر آخر إذا كان الشرط غير صحيح. مثال: إذا كانت العلامة 60 أو أكثر فالطالب ناجح، وإلا يحتاج إلى تحسين.`,
-        code: `let grade = 75;
-if (grade >= 60) {
-  console.log('ناجح');
-} else {
-  console.log('حاول مرة أخرى');
-}`,
+        explanation: "الجمل الشرطية تجعل البرنامج يتخذ قرارًا حسب الحالة. نستخدم if عندما نريد تنفيذ أمر إذا كان الشرط صحيحًا، ونستخدم else إذا كان الشرط غير صحيح.",
+        terms: "if: إذا تحقق الشرط. else: إذا لم يتحقق الشرط. condition: شرط. >= أكبر أو يساوي.",
+        code: "let grade = 75;\nif (grade >= 60) {\n  console.log('ناجح');\n} else {\n  console.log('حاول مرة أخرى');\n}",
         activity: "حوّلوا مواقف يومية إلى شروط: إذا كان الجو ماطرًا، إذا كان الطالب حاضرًا، إذا كانت كلمة السر صحيحة.",
         questions: [
           { q: "متى يتم تنفيذ كود if؟", a: ["عندما يكون الشرط صحيحًا", "عندما يكون الشرط خطأ", "دائمًا"], c: 0 },
@@ -388,19 +402,10 @@ if (grade >= 60) {
       {
         title: "الشروط المتداخلة و Switch",
         tag: "الوحدة 6",
-        explanation: `أحيانًا يكون القرار في البرنامج مركبًا، أي أننا نحتاج إلى شرط داخل شرط. هذا يسمى شروطًا متداخلة. أما switch فنستخدمه عندما يكون لدينا عدة حالات واضحة لقيمة واحدة، مثل أيام الأسبوع أو اختيار مستوى في لعبة.`,
-        code: `let day = 'Monday';
-switch(day) {
-  case 'Monday':
-    console.log('يوجد لقاء');
-    break;
-  case 'Friday':
-    console.log('نشاط خاص');
-    break;
-  default:
-    console.log('لا يوجد لقاء');
-}`,
-        activity: "اطلبوا من الطلاب بناء قرار حسب اليوم: يوم تعليم، يوم عطلة، يوم نشاط، ثم حوّلوه إلى switch.",
+        explanation: "أحيانًا يكون القرار مركبًا ونحتاج إلى شرط داخل شرط، وهذا يسمى شروطًا متداخلة. أما switch فنستخدمه عندما يكون لدينا عدة حالات واضحة لقيمة واحدة.",
+        terms: "nested if: شرط داخل شرط. switch: اختيار بين عدة حالات. case: حالة معينة. break: إنهاء الحالة.",
+        code: "let day = 'Monday';\nswitch(day) {\n  case 'Monday':\n    console.log('يوجد لقاء');\n    break;\n  case 'Friday':\n    console.log('نشاط خاص');\n    break;\n  default:\n    console.log('لا يوجد لقاء');\n}",
+        activity: "ابنوا قرارًا حسب اليوم: يوم تعليم، يوم عطلة، يوم نشاط، ثم حوّلوه إلى switch.",
         questions: [
           { q: "متى نستخدم الشروط المتداخلة؟", a: ["في الحالات البسيطة فقط", "عندما يكون القرار مركبًا", "بدل المتغيرات"], c: 1 },
           { q: "متى يكون switch مناسبًا؟", a: ["عند وجود عدة حالات لقيمة واحدة", "عند تعريف نص", "عند كتابة تعليق"], c: 0 },
@@ -411,12 +416,9 @@ switch(day) {
       {
         title: "حلقات while",
         tag: "الوحدة 7",
-        explanation: `الحلقة هي طريقة لتكرار تنفيذ أوامر عدة مرات. نستخدم while عندما نريد تنفيذ أمر طالما أن الشرط صحيح. يجب الانتباه إلى تحديث الشرط داخل الحلقة حتى لا تصبح الحلقة لا نهائية.`,
-        code: `let i = 1;
-while (i <= 5) {
-  console.log('مرحبا');
-  i++;
-}`,
+        explanation: "الحلقة هي طريقة لتكرار تنفيذ أوامر عدة مرات. نستخدم while عندما نريد تنفيذ أمر طالما أن الشرط صحيح، ويجب تحديث الشرط حتى لا تصبح الحلقة لا نهائية.",
+        terms: "loop: حلقة تكرار. while: طالما الشرط صحيح. i++: زيادة العداد بواحد. infinite loop: حلقة لا نهائية.",
+        code: "let i = 1;\nwhile (i <= 5) {\n  console.log('مرحبا');\n  i++;\n}",
         activity: "اعطوا تعليمات متكررة للوصول إلى هدف داخل الصف، ثم ناقشوا كيف تختصر الحلقة هذه التعليمات.",
         questions: [
           { q: "ما وظيفة الحلقة؟", a: ["تكرار أوامر", "تعريف لون", "حذف الصفحة"], c: 0 },
@@ -428,10 +430,9 @@ while (i <= 5) {
       {
         title: "حلقات for",
         tag: "الوحدة 8",
-        explanation: `حلقة for تُستخدم غالبًا عندما نعرف عدد مرات التكرار مسبقًا. في سطر واحد نكتب بداية العداد، شرط الاستمرار، وطريقة التحديث. لذلك تعتبر for مناسبة لطباعة شيء عددًا محددًا من المرات، أو المرور على عناصر داخل مصفوفة.`,
-        code: `for (let i = 0; i < 5; i++) {
-  console.log('Hello');
-}`,
+        explanation: "حلقة for تُستخدم غالبًا عندما نعرف عدد مرات التكرار مسبقًا. في سطر واحد نكتب بداية العداد، شرط الاستمرار، وطريقة التحديث.",
+        terms: "for: حلقة تكرار بعدد معروف. i: عداد. i < 5: شرط الاستمرار. i++: زيادة العداد.",
+        code: "for (let i = 0; i < 5; i++) {\n  console.log('Hello');\n}",
         activity: "قارنوا بين while و for: متى نستخدم كل واحدة؟ ثم اطبعوا أسماء الطلاب باستخدام for.",
         questions: [
           { q: "متى نستخدم for غالبًا؟", a: ["عندما نعرف عدد التكرارات", "عند كتابة نص فقط", "عند تعريف ثابت"], c: 0 },
@@ -443,11 +444,10 @@ while (i <= 5) {
       {
         title: "المصفوفات Arrays",
         tag: "الوحدة 9",
-        explanation: `المصفوفة هي طريقة لحفظ عدة قيم داخل اسم واحد. كل قيمة داخل المصفوفة لها مكان يسمى index، والعد يبدأ من صفر. نستخدم length لمعرفة عدد العناصر داخل المصفوفة. المصفوفات مهمة لأنها تحفظ قوائم مثل أسماء، صور، منتجات، علامات، أو أسئلة.`,
-        code: `let students = ['Sara', 'Omar', 'Lina'];
-console.log(students[0]);
-console.log(students.length);`,
-        activity: "اطلبوا من الطلاب ذكر أمثلة لقوائم في المواقع: صور، فيديوهات، منتجات، أسماء، أسئلة اختبار.",
+        explanation: "المصفوفة هي طريقة لحفظ عدة قيم داخل اسم واحد. كل قيمة داخل المصفوفة لها مكان يسمى index، والعد يبدأ من صفر. نستخدم length لمعرفة عدد العناصر.",
+        terms: "array: مصفوفة. index: موقع العنصر. length: عدد العناصر. []: أقواس المصفوفة.",
+        code: "let students = ['Sara', 'Omar', 'Lina'];\nconsole.log(students[0]);\nconsole.log(students.length);",
+        activity: "اذكروا أمثلة لقوائم في المواقع: صور، فيديوهات، منتجات، أسماء، أسئلة اختبار.",
         questions: [
           { q: "ما فائدة المصفوفة؟", a: ["حفظ قيمة واحدة فقط", "حفظ عدة قيم", "عرض رسالة فقط"], c: 1 },
           { q: "من أي رقم يبدأ index؟", a: ["0", "1", "10"], c: 0 },
@@ -458,12 +458,9 @@ console.log(students.length);`,
       {
         title: "أساليب المصفوفات Methods",
         tag: "الوحدة 10",
-        explanation: `الأساليب هي أوامر جاهزة نستعملها مع الكائنات أو المصفوفات. نكتب اسم المصفوفة ثم نقطة ثم اسم الأسلوب. من الأساليب الشائعة: push لإضافة عنصر، pop لحذف آخر عنصر، و toString لتحويل المصفوفة إلى نص.`,
-        code: `let fruits = ['apple', 'banana'];
-fruits.push('orange');
-console.log(fruits);
-fruits.pop();
-console.log(fruits);`,
+        explanation: "الأساليب هي أوامر جاهزة نستعملها مع الكائنات أو المصفوفات. نكتب اسم المصفوفة ثم نقطة ثم اسم الأسلوب. من الأساليب الشائعة push و pop.",
+        terms: "method: أسلوب جاهز. push: إضافة عنصر. pop: حذف آخر عنصر. dot notation: كتابة نقطة بين الاسم والأسلوب.",
+        code: "let fruits = ['apple', 'banana'];\nfruits.push('orange');\nconsole.log(fruits);\nfruits.pop();\nconsole.log(fruits);",
         activity: "اعطوا كل مجموعة أسلوبًا واحدًا وتطلبون منها شرح ماذا يفعل مع مثال بسيط.",
         questions: [
           { q: "كيف نستدعي أسلوبًا على مصفوفة؟", a: ["اسم المصفوفة ثم نقطة", "فقط alert", "باستخدام HTML"], c: 0 },
@@ -475,12 +472,9 @@ console.log(fruits);`,
       {
         title: "الدوال Functions",
         tag: "الوحدة 11",
-        explanation: `الدالة هي مجموعة أوامر نعطيها اسمًا، ونستطيع تشغيلها أكثر من مرة. نستخدم الدوال حتى لا نكرر نفس الكود، وحتى يكون البرنامج منظمًا وسهل القراءة. يمكن للدالة أن تستقبل معلومات تسمى parameters، ويمكن للدالة أن تعيد نتيجة باستخدام return.`,
-        code: `function sayHello(name) {
-  console.log('أهلاً ' + name);
-}
-
-sayHello('Neta');`,
+        explanation: "الدالة هي مجموعة أوامر نعطيها اسمًا، ونستطيع تشغيلها أكثر من مرة. نستخدم الدوال حتى لا نكرر نفس الكود، وحتى يكون البرنامج منظمًا وسهل القراءة.",
+        terms: "function: دالة. parameter: قيمة تستقبلها الدالة. return: إرجاع نتيجة. call: استدعاء الدالة.",
+        code: "function sayHello(name) {\n  console.log('أهلاً ' + name);\n}\n\nsayHello('Neta');",
         activity: "اشرحوا الدالة كأنها مقطع متكرر في أغنية: بدل كتابته كل مرة، نعطيه اسمًا ونستدعيه عند الحاجة.",
         questions: [
           { q: "لماذا نستخدم الدوال؟", a: ["لتنظيم وتكرار الكود بسهولة", "لحذف المتغيرات", "لإيقاف الموقع"], c: 0 },
@@ -493,105 +487,267 @@ sayHello('Neta');`,
 
     let currentLesson = 0;
     const completed = new Set();
-
     const lessonButtons = document.getElementById("lessonButtons");
     const lessonContent = document.getElementById("lessonContent");
-    const progressNumber = document.getElementById("progressNumber");
-    const progressFill = document.getElementById("progressFill");
+
+    function clearElement(element) {
+      while (element.firstChild) {
+        element.removeChild(element.firstChild);
+      }
+    }
+
+    function createElement(tagName, className, textContent) {
+      const element = document.createElement(tagName);
+      if (className) element.className = className;
+      if (textContent !== undefined) element.textContent = textContent;
+      return element;
+    }
+
+    function appendBox(parent, className, title, text) {
+      const box = createElement("div", className);
+      box.appendChild(createElement("div", "box-title", title));
+      box.appendChild(createElement("p", "", text));
+      parent.appendChild(box);
+      return box;
+    }
 
     function renderButtons() {
-      lessonButtons.innerHTML = "";
+      clearElement(lessonButtons);
       lessons.forEach((lesson, index) => {
-        const btn = document.createElement("button");
-        btn.className = "lesson-btn" + (index === currentLesson ? " active" : "");
-        btn.textContent = `${completed.has(index) ? "✓ " : ""}${lesson.tag}: ${lesson.title}`;
-        btn.onclick = () => {
+        const label = `${completed.has(index) ? "✓ " : ""}${lesson.tag}: ${lesson.title}`;
+        const button = createElement("button", "lesson-btn", label);
+        button.type = "button";
+        if (index === currentLesson) button.classList.add("active");
+        button.addEventListener("click", () => {
           currentLesson = index;
           render();
-        };
-        lessonButtons.appendChild(btn);
+        });
+        lessonButtons.appendChild(button);
       });
     }
 
-    function renderQuestions(questions) {
-      return questions.map((question, qIndex) => `
-        <div class="single-question">
-          <p><strong>السؤال ${qIndex + 1}:</strong> ${question.q}</p>
-          <div class="answers">
-            ${question.a.map((answer, aIndex) => `<button onclick="checkAnswer(${qIndex}, ${aIndex})">${answer}</button>`).join("")}
-          </div>
-          <div class="result" id="result-${qIndex}"></div>
-        </div>
-      `).join("");
+    function renderQuestions(container, questions) {
+      questions.forEach((question, questionIndex) => {
+        const questionBox = createElement("div", "single-question");
+        questionBox.appendChild(createElement("p", "", `السؤال ${questionIndex + 1}: ${question.q}`));
+
+        const answersBox = createElement("div", "answers");
+        question.a.forEach((answer, answerIndex) => {
+          const button = createElement("button", "", answer);
+          button.type = "button";
+          button.addEventListener("click", () => checkAnswer(questionIndex, answerIndex));
+          answersBox.appendChild(button);
+        });
+
+        questionBox.appendChild(answersBox);
+        const result = createElement("div", "result");
+        result.id = `result-${questionIndex}`;
+        questionBox.appendChild(result);
+        container.appendChild(questionBox);
+      });
     }
 
     function renderLesson() {
       const lesson = lessons[currentLesson];
-      lessonContent.innerHTML = `
-        <span class="tag">${lesson.tag}</span>
-        <h2>${lesson.title}</h2>
-        <p>${lesson.explanation}</p>
+      clearElement(lessonContent);
 
-        <div class="code-box">${escapeHtml(lesson.code)}</div>
+      lessonContent.appendChild(createElement("span", "tag", lesson.tag));
+      lessonContent.appendChild(createElement("h2", "", lesson.title));
+      lessonContent.appendChild(createElement("p", "", lesson.explanation));
+      appendBox(lessonContent, "activity-box terms-box", "شرح المصطلحات", lesson.terms);
 
-        <div class="activity-box">
-          <div class="box-title">نشاط داخل الصف</div>
-          <p>${lesson.activity}</p>
-        </div>
+      const codeBox = createElement("pre", "code-box", lesson.code);
+      lessonContent.appendChild(codeBox);
+      appendBox(lessonContent, "activity-box", "نشاط", lesson.activity);
 
-        <div class="quiz-box">
-          <div class="box-title">أسئلة بعد الشرح</div>
-          ${renderQuestions(lesson.questions)}
-        </div>
+      const quizBox = createElement("div", "quiz-box");
+      quizBox.appendChild(createElement("div", "box-title", "أسئلة"));
+      renderQuestions(quizBox, lesson.questions);
+      lessonContent.appendChild(quizBox);
 
-        <div class="challenge-box">
-          <div class="box-title">تحدي صغير</div>
-          <p>${lesson.challenge}</p>
-        </div>
+      appendBox(lessonContent, "challenge-box", "تحدي", lesson.challenge);
 
-        <button class="complete-btn" onclick="completeLesson()">
-          أنهيت الدرس
-        </button>
-      `;
+      const runner = createElement("div", "code-runner");
+      runner.appendChild(createElement("div", "box-title", "مكان كتابة الكود"));
+      runner.appendChild(createElement("p", "", "اكتب كود JavaScript هنا ثم اضغط تشغيل. جرّب تعديل المثال أو حل التحدي."));
+
+      const textarea = document.createElement("textarea");
+      textarea.id = "studentCode";
+      textarea.value = lesson.code;
+      runner.appendChild(textarea);
+
+      const runButton = createElement("button", "run-btn", "تشغيل الكود");
+      runButton.type = "button";
+      runButton.addEventListener("click", runStudentCode);
+      runner.appendChild(runButton);
+
+      const output = createElement("div", "output-box", "النتيجة ستظهر هنا...");
+      output.id = "codeOutput";
+      runner.appendChild(output);
+      lessonContent.appendChild(runner);
+
+      const completeButton = createElement("button", "complete-btn", "أنهيت الدرس");
+      completeButton.type = "button";
+      completeButton.addEventListener("click", completeLesson);
+      lessonContent.appendChild(completeButton);
     }
 
     function checkAnswer(questionIndex, answerIndex) {
       const result = document.getElementById(`result-${questionIndex}`);
       const question = lessons[currentLesson].questions[questionIndex];
-      if (answerIndex === question.c) {
-        result.style.color = "#15803d";
-        result.textContent = "إجابة صحيحة، أحسنت!";
-      } else {
-        result.style.color = "#b91c1c";
-        result.textContent = "قريب، حاول مرة أخرى.";
+      const isCorrect = answerIndex === question.c;
+      result.style.color = isCorrect ? "#15803d" : "#b91c1c";
+      result.textContent = isCorrect ? "إجابة صحيحة، أحسنت!" : "قريب، حاول مرة أخرى.";
+    }
+
+    function runStudentCode() {
+      const textarea = document.getElementById("studentCode");
+      const output = document.getElementById("codeOutput");
+      const code = textarea.value;
+      const messages = [];
+      const originalLog = console.log;
+      const originalAlert = window.alert;
+
+      console.log = function(...args) {
+        messages.push(args.map(String).join(" "));
+      };
+
+      window.alert = function(message) {
+        messages.push("alert: " + String(message));
+      };
+
+      try {
+        new Function(code)();
+        output.style.color = "#d1fae5";
+        output.textContent = messages.length ? messages.join("\n") : "تم تشغيل الكود بدون رسائل.";
+      } catch (error) {
+        output.style.color = "#fecaca";
+        output.textContent = "خطأ في الكود: " + error.message;
+      } finally {
+        console.log = originalLog;
+        window.alert = originalAlert;
       }
+    }
+
+    function showFinalTest() {
+      clearElement(lessonContent);
+      const finalQuestions = lessons.map((lesson) => lesson.questions[0]);
+
+      lessonContent.appendChild(createElement("h2", "", "الاختبار النهائي"));
+      lessonContent.appendChild(createElement("p", "", "أجب عن الأسئلة التالية بعد إنهاء الوحدات. في النهاية اضغط على زر عرض النتيجة."));
+
+      const finalBox = createElement("div", "final-test-box");
+      finalQuestions.forEach((question, questionIndex) => {
+        const questionBox = createElement("div", "single-question");
+        questionBox.appendChild(createElement("p", "", `السؤال ${questionIndex + 1}: ${question.q}`));
+
+        question.a.forEach((answer, answerIndex) => {
+          const label = createElement("label", "final-option");
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = `final-${questionIndex}`;
+          input.value = String(answerIndex);
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(" " + answer));
+          questionBox.appendChild(label);
+        });
+
+        finalBox.appendChild(questionBox);
+      });
+
+      const finalButton = createElement("button", "final-btn", "عرض النتيجة");
+      finalButton.type = "button";
+      finalButton.addEventListener("click", checkFinalTest);
+      finalBox.appendChild(finalButton);
+
+      const finalResult = createElement("div", "result");
+      finalResult.id = "finalResult";
+      finalResult.style.fontSize = "20px";
+      finalResult.style.marginTop = "15px";
+      finalBox.appendChild(finalResult);
+      lessonContent.appendChild(finalBox);
+    }
+
+    function checkFinalTest() {
+      const finalQuestions = lessons.map((lesson) => lesson.questions[0]);
+      let score = 0;
+
+      finalQuestions.forEach((question, questionIndex) => {
+        const selected = document.querySelector(`input[name="final-${questionIndex}"]:checked`);
+        if (selected && Number(selected.value) === question.c) {
+          score += 1;
+        }
+      });
+
+      const percent = Math.round((score / finalQuestions.length) * 100);
+      const finalResult = document.getElementById("finalResult");
+      finalResult.style.color = percent >= 60 ? "#15803d" : "#b91c1c";
+      finalResult.textContent = `نتيجتك: ${score} من ${finalQuestions.length} (${percent}%)`;
     }
 
     function completeLesson() {
       completed.add(currentLesson);
-      updateProgress();
       renderButtons();
     }
 
-    function updateProgress() {
-      const percent = Math.round((completed.size / lessons.length) * 100);
-      progressNumber.textContent = percent + "%";
-      progressFill.style.width = percent + "%";
+    function goHome() {
+      currentLesson = 0;
+      render();
     }
 
-    function escapeHtml(text) {
-      return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+    function nextLesson() {
+      if (currentLesson < lessons.length - 1) {
+        currentLesson += 1;
+        render();
+      }
+    }
+
+    function prevLesson() {
+      if (currentLesson > 0) {
+        currentLesson -= 1;
+        render();
+      }
     }
 
     function render() {
       renderButtons();
       renderLesson();
-      updateProgress();
     }
 
+    function validateLessonsData() {
+      console.assert(Array.isArray(lessons), "lessons يجب أن تكون مصفوفة.");
+      console.assert(lessons.length === 11, "يجب أن تحتوي البيانات على 11 وحدة.");
+      lessons.forEach((lesson, index) => {
+        console.assert(typeof lesson.title === "string" && lesson.title.length > 0, `عنوان الوحدة ${index + 1} غير صالح.`);
+        console.assert(typeof lesson.tag === "string" && lesson.tag.length > 0, `وسم الوحدة ${index + 1} غير صالح.`);
+        console.assert(typeof lesson.code === "string", `كود الوحدة ${index + 1} يجب أن يكون نصًا.`);
+        console.assert(Array.isArray(lesson.questions) && lesson.questions.length >= 3, `الوحدة ${index + 1} تحتاج 3 أسئلة على الأقل.`);
+        lesson.questions.forEach((question, qIndex) => {
+          console.assert(typeof question.q === "string" && question.q.length > 0, `نص السؤال ${qIndex + 1} في الوحدة ${index + 1} غير صالح.`);
+          console.assert(Array.isArray(question.a) && question.a.length >= 2, `السؤال ${qIndex + 1} في الوحدة ${index + 1} يحتاج إجابات.`);
+          console.assert(Number.isInteger(question.c) && question.c >= 0 && question.c < question.a.length, `الإجابة الصحيحة للسؤال ${qIndex + 1} في الوحدة ${index + 1} غير صالحة.`);
+        });
+      });
+    }
+
+    function runSmokeTests() {
+      validateLessonsData();
+      console.assert(typeof render === "function", "دالة render غير معرفة.");
+      console.assert(typeof renderButtons === "function", "دالة renderButtons غير معرفة.");
+      console.assert(typeof renderLesson === "function", "دالة renderLesson غير معرفة.");
+      console.assert(typeof runStudentCode === "function", "محرر الكود غير جاهز.");
+      console.assert(typeof showFinalTest === "function", "الاختبار النهائي غير جاهز.");
+      console.assert(Boolean(document.getElementById("lessonButtons")), "قائمة الدروس غير موجودة.");
+      console.assert(Boolean(document.getElementById("lessonContent")), "منطقة المحتوى غير موجودة.");
+      console.log("تم تشغيل اختبارات الموقع الداخلية بنجاح.");
+    }
+
+    document.getElementById("homeButton").addEventListener("click", goHome);
+    document.getElementById("prevButton").addEventListener("click", prevLesson);
+    document.getElementById("nextButton").addEventListener("click", nextLesson);
+    document.getElementById("finalButton").addEventListener("click", showFinalTest);
+
+    runSmokeTests();
     render();
   </script>
 </body>
