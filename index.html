@@ -5,490 +5,339 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>رحلة JavaScript التفاعلية</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+    * { box-sizing: border-box; }
 
     body {
+      margin: 0;
+      font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #eef6ff, #f7ecff);
       color: #1f2937;
-      min-height: 100vh;
     }
 
     header {
       background: linear-gradient(135deg, #4f46e5, #9333ea);
       color: white;
-      padding: 35px 20px;
       text-align: center;
-      border-bottom-left-radius: 35px;
-      border-bottom-right-radius: 35px;
+      padding: 32px 16px;
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
     }
 
-    header h1 {
-      font-size: 34px;
-      margin-bottom: 10px;
-    }
+    header h1 { margin: 0 0 8px; font-size: 32px; }
+    header p { margin: 0; font-size: 17px; }
 
-    header p {
-      font-size: 18px;
-      opacity: 0.95;
-    }
-
-    .container {
-      max-width: 1150px;
-      margin: 30px auto;
-      padding: 0 18px;
-    }
-
-    .nav-bar {
-      max-width: 1150px;
-      margin: 20px auto;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+    .container { max-width: 1150px; margin: 24px auto; padding: 0 16px; }
 
     .layout {
       display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 22px;
+      grid-template-columns: 300px 1fr;
+      gap: 20px;
+      align-items: start;
     }
 
-    .lessons-list {
+    .lessons-list,
+    .lesson-content {
       background: white;
-      border-radius: 24px;
+      border-radius: 22px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
       padding: 18px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-      height: fit-content;
-      position: sticky;
-      top: 20px;
     }
 
-    .lessons-list h3 {
-      margin-bottom: 15px;
-      color: #111827;
-    }
+    .lessons-list h3 { margin-top: 0; color: #4f46e5; }
 
-    .lesson-btn,
-    .nav-page-btn {
+    button {
       border: none;
-      background: #f3f4f6;
-      padding: 13px;
-      margin-bottom: 10px;
-      border-radius: 16px;
-      text-align: right;
+      border-radius: 14px;
+      padding: 11px 14px;
       cursor: pointer;
       font-size: 15px;
       transition: 0.2s;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .lesson-btn {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      text-align: right;
+      background: #f3f4f6;
       color: #1f2937;
     }
 
-    .lesson-btn {
-      width: 100%;
-    }
-
-    .nav-page-btn {
-      width: auto;
-      min-width: 130px;
-      text-align: center;
-    }
-
-    .lesson-btn:hover,
     .lesson-btn.active,
-    .nav-page-btn:hover {
+    .main-btn {
       background: linear-gradient(135deg, #4f46e5, #9333ea);
       color: white;
-      transform: translateY(-2px);
     }
 
-    .lesson-content {
-      background: white;
-      border-radius: 24px;
-      padding: 26px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    .nav-bottom {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
     }
 
     .tag {
       display: inline-block;
       background: #ede9fe;
       color: #6d28d9;
-      padding: 7px 13px;
       border-radius: 999px;
+      padding: 6px 12px;
+      margin-bottom: 10px;
       font-size: 14px;
-      margin-bottom: 12px;
     }
 
-    .lesson-content h2 {
-      font-size: 30px;
-      color: #4f46e5;
-      margin-bottom: 12px;
-    }
+    h2 { color: #4f46e5; margin-top: 0; }
+    p { line-height: 1.8; font-size: 16px; }
 
-    .lesson-content p {
-      line-height: 1.9;
-      font-size: 17px;
-      margin-bottom: 16px;
-    }
+    .box { margin-top: 16px; padding: 16px; border-radius: 18px; }
+    .terms-box { background: #f8fafc; border: 1px solid #e5e7eb; }
+    .activity-box { background: #eef2ff; }
+    .challenge-box { background: #ecfdf5; }
+    .runner-box { background: #f8fafc; border: 1px solid #e5e7eb; }
 
-    .code-box {
+    .example-box {
       background: #111827;
       color: #d1fae5;
-      border-radius: 18px;
-      padding: 18px;
       direction: ltr;
       text-align: left;
-      overflow-x: auto;
-      margin: 15px 0;
-      font-size: 15px;
-      line-height: 1.7;
       white-space: pre-wrap;
       font-family: Consolas, monospace;
+      overflow-x: auto;
     }
 
-    .activity-box,
-    .quiz-box,
-    .challenge-box,
-    .code-runner,
-    .final-test-box {
-      border-radius: 20px;
-      padding: 18px;
-      margin-top: 18px;
-    }
-
-    .activity-box {
-      background: #eef2ff;
-    }
-
-    .terms-box {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-    }
-
-    .quiz-box {
-      background: #fff7ed;
-    }
-
-    .challenge-box {
-      background: #ecfdf5;
-    }
-
-    .code-runner {
-      background: #f8fafc;
-      border: 1px solid #e5e7eb;
-    }
-
-    .final-test-box {
-      background: #fefce8;
-      border: 1px solid #fde68a;
-    }
-
-    .box-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-      font-size: 18px;
-    }
-
-    .answers button,
-    .final-option {
-      display: block;
+    .runner-box textarea {
       width: 100%;
-      margin: 8px 0;
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid #ddd;
-      background: white;
-      cursor: pointer;
-      text-align: right;
-      font-size: 15px;
-      transition: 0.2s;
-    }
-
-    .answers button:hover,
-    .final-option:hover {
-      background: #f3f4f6;
-    }
-
-    .result {
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    .complete-btn,
-    .run-btn,
-    .final-btn {
-      margin-top: 12px;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-size: 15px;
-      transition: 0.2s;
-    }
-
-    .complete-btn {
-      margin-top: 22px;
-      background: linear-gradient(135deg, #16a34a, #22c55e);
-    }
-
-    .run-btn,
-    .final-btn {
-      background: linear-gradient(135deg, #4f46e5, #9333ea);
-    }
-
-    .complete-btn:hover,
-    .run-btn:hover,
-    .final-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .code-runner textarea {
-      width: 100%;
-      min-height: 160px;
-      border-radius: 14px;
-      border: 1px solid #d1d5db;
-      padding: 14px;
+      min-height: 150px;
       direction: ltr;
       text-align: left;
-      font-size: 15px;
       font-family: Consolas, monospace;
+      font-size: 15px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid #d1d5db;
       resize: vertical;
-      background: white;
     }
 
     .output-box {
       margin-top: 12px;
       background: #111827;
       color: #d1fae5;
+      padding: 12px;
       border-radius: 14px;
-      padding: 14px;
-      min-height: 50px;
+      min-height: 45px;
       direction: ltr;
       text-align: left;
       white-space: pre-wrap;
       font-family: Consolas, monospace;
     }
 
-    .footer-note {
-      text-align: center;
-      margin: 30px 0 15px;
-      color: #6b7280;
-      font-size: 14px;
+    .level { margin-top: 16px; padding: 14px; border-radius: 18px; }
+    .easy { background: #ecfdf5; }
+    .medium { background: #fff7ed; }
+    .hard { background: #fee2e2; }
+
+    .question-card {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 16px;
+      padding: 12px;
+      margin: 10px 0;
+    }
+
+    .answers button {
+      display: block;
+      width: 100%;
+      background: white;
+      border: 1px solid #e5e7eb;
+      margin: 7px 0;
+      text-align: right;
+    }
+
+    .result { font-weight: bold; margin-top: 8px; }
+    .final-box { background: #fefce8; border: 1px solid #fde68a; }
+
+    .final-option {
+      display: block;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 10px;
+      margin: 8px 0;
+      cursor: pointer;
     }
 
     @media (max-width: 850px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .lessons-list {
-        position: static;
-      }
-
-      header h1 {
-        font-size: 27px;
-      }
+      .layout { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>رحلة JavaScript التفاعلية</h1>
-    <p>تعلم البرمجة خطوة بخطوة من خلال الشرح، التجربة، والأسئلة السريعة</p>
+    <p>شرح، مصطلحات، أمثلة، أسئلة بمستويات، وتدريب على كتابة الكود</p>
   </header>
 
   <main class="container">
-    <nav class="nav-bar">
-      <button type="button" id="homeButton" class="nav-page-btn">🏠 الرئيسية</button>
-      <button type="button" id="finalButton" class="nav-page-btn">📝 الاختبار النهائي</button>
-    </nav>
-
-    <section class="layout">
+    <div class="layout">
       <aside class="lessons-list">
         <h3>الوحدات التعليمية</h3>
         <div id="lessonButtons"></div>
+        <button type="button" id="finalButton" class="lesson-btn main-btn">الاختبار النهائي</button>
       </aside>
 
-      <section class="lesson-content" id="lessonContent"></section>
-    </section>
-
-    <!-- أزرار التنقل تحت المحتوى بشكل واضح -->
-    <div class="nav-bar" style="margin-top:20px">
-      <button type="button" id="prevButton" class="nav-page-btn">⬅️ السابق</button>
-      <button type="button" id="nextButton" class="nav-page-btn">➡️ التالي</button>
+      <section>
+        <div id="lessonContent" class="lesson-content"></div>
+        <div class="nav-bottom">
+          <button type="button" id="prevButton" class="main-btn">السابق</button>
+          <button type="button" id="nextButton" class="main-btn">التالي</button>
+        </div>
+      </section>
     </div>
-
-    <p class="footer-note">تم إعداد الموقع كنسخة تعليمية أولية قابلة للتطوير والإضافة.</p>
   </main>
 
   <script>
     "use strict";
 
-    const lessons = [
+    var starterCode = "// اكتب الكود هنا\nconsole.log('جرب بنفسك');";
+
+    var lessons = [
       {
         title: "مقدمة JavaScript",
         tag: "الوحدة 1",
-        explanation: "JavaScript هي لغة برمجة تُستخدم لإضافة التفاعل داخل المواقع. من خلالها نستطيع عرض رسالة، استقبال معلومات من المستخدم، تغيير محتوى الصفحة، فحص إجابة، أو بناء لعبة بسيطة.",
-        terms: "JavaScript: لغة برمجة تضيف تفاعل للموقع. alert: أمر يعرض رسالة للمستخدم. console.log: أمر يعرض رسالة داخل أدوات المطور.",
-        code: "alert('أهلاً بكم في عالم JavaScript');\nconsole.log('هذه رسالة تظهر للمطور');",
-        activity: "اذكروا أمثلة لمواقع فيها تفاعل مثل: زر تسجيل الدخول، لعبة، اختبار إلكتروني، أو سلة مشتريات.",
+        explanation: "JavaScript هي لغة برمجة تستخدم لإضافة التفاعل داخل المواقع. من خلالها نستطيع عرض رسالة، استقبال معلومات من المستخدم، تغيير محتوى الصفحة، فحص إجابة، أو بناء لعبة بسيطة.",
+        terms: "JavaScript: لغة برمجة تضيف التفاعل للموقع. alert: أمر يعرض رسالة للمستخدم. console.log: أمر يعرض رسالة داخل أدوات المطور.",
+        code: "alert('أهلا بكم في عالم JavaScript');\nconsole.log('هذه رسالة تظهر للمطور');",
+        activity: "اذكروا أمثلة لمواقع فيها تفاعل مثل زر تسجيل الدخول، لعبة، اختبار إلكتروني، أو سلة مشتريات.",
+        challenge: "أنشئ متغيرا باسمك، ثم استخدم alert لعرض رسالة ترحيب تحتوي على الاسم، واستخدم console.log لطباعة رسالة ثانية للمطور.",
         questions: [
-          { q: "ما وظيفة JavaScript في الموقع؟", a: ["تصميم الألوان فقط", "إضافة التفاعل", "كتابة النصوص فقط"], c: 1 },
-          { q: "أي أمر يعرض رسالة للمستخدم؟", a: ["console.log", "alert", "let"], c: 1 },
-          { q: "أين تظهر رسالة console.log؟", a: ["داخل الصفحة", "داخل أدوات المطور", "في عنوان الموقع"], c: 1 }
-        ],
-        challenge: "اكتب كود يعرض رسالة ترحيب باسمك باستخدام alert."
+          { q: "ما هي JavaScript؟", a: ["لغة برمجة", "متصفح", "صورة"], c: 0, level: "easy" },
+          { q: "ما وظيفة alert؟", a: ["عرض رسالة", "حذف كود", "رسم صورة"], c: 0, level: "easy" },
+          { q: "أين تظهر رسالة console.log؟", a: ["داخل Console", "داخل الصورة", "في اسم الملف"], c: 0, level: "easy" },
+          { q: "أي لغة تضيف التفاعل للموقع؟", a: ["HTML", "CSS", "JavaScript"], c: 2, level: "medium" },
+          { q: "ماذا يفعل الكود alert('Hi')؟", a: ["يعرض نافذة رسالة", "ينشئ متغير", "يفتح مصفوفة"], c: 0, level: "medium" },
+          { q: "أي سطر مكتوب بطريقة صحيحة؟", a: ["alert Hi", "alert('Hi');", "alert Hi;"], c: 1, level: "hard" },
+          { q: "لماذا نستخدم console.log أثناء البرمجة؟", a: ["لفحص النتائج أثناء التطوير", "لتلوين الصفحة", "لحذف الأخطاء تلقائيا"], c: 0, level: "hard" }
+        ]
       },
       {
         title: "المتغيرات والثوابت",
         tag: "الوحدة 2",
-        explanation: "المتغيرات والثوابت هي طريقة لحفظ المعلومات داخل البرنامج. المتغير يحفظ قيمة يمكن تغييرها مثل اسم الطالب أو عدد النقاط، والثابت يحفظ قيمة لا نريد تغييرها مثل اسم المشروع.",
-        terms: "let: لتعريف متغير قابل للتغيير. const: لتعريف ثابت لا يتغير. variable: متغير. constant: ثابت.",
+        explanation: "المتغيرات والثوابت تحفظ المعلومات داخل البرنامج. المتغير يحفظ قيمة يمكن تغييرها، والثابت يحفظ قيمة لا نريد تغييرها.",
+        terms: "let: تعريف متغير قابل للتغيير. const: تعريف ثابت لا يتغير. variable: متغير. constant: ثابت.",
         code: "let studentName = 'Amina';\nlet points = 10;\nconst PROJECT_NAME = 'Neta';\nconsole.log(studentName + ' لديها ' + points + ' نقاط');",
         activity: "صنفوا المعلومات التالية إلى متغير أو ثابت: اسم الطالب، عدد النقاط، اسم الفرع، اسم المشروع.",
+        challenge: "عرف متغيرا لاسم الطالب ومتغيرا لعدد النقاط وثابتا لاسم الفرع، ثم اطبع جملة تعرض اسم الطالب واسم الفرع وعدد النقاط في سطر واحد.",
         questions: [
-          { q: "أي كلمة نستخدم لتعريف متغير؟", a: ["let", "const", "alert"], c: 0 },
-          { q: "أي كلمة نستخدم لتعريف ثابت؟", a: ["prompt", "const", "console"], c: 1 },
-          { q: "أي مثال مناسب كمتغير؟", a: ["اسم المشروع", "عدد نقاط الطالب", "عدد أيام الأسبوع"], c: 1 }
-        ],
-        challenge: "عرّف متغيرًا باسم الطالب وثابتًا باسم الفرع، ثم اطبع جملة ترحيب."
+          { q: "أي كلمة نستخدم لتعريف متغير؟", a: ["let", "const", "alert"], c: 0, level: "easy" },
+          { q: "أي كلمة نستخدم لتعريف ثابت؟", a: ["prompt", "const", "console"], c: 1, level: "easy" },
+          { q: "ما معنى variable؟", a: ["متغير", "ثابت", "شرط"], c: 0, level: "easy" },
+          { q: "أي مثال مناسب كمتغير؟", a: ["عدد نقاط الطالب", "اسم المشروع", "عدد أيام الأسبوع"], c: 0, level: "medium" },
+          { q: "ماذا يحدث إذا غيرنا قيمة let؟", a: ["يمكن تغييرها", "يتوقف الموقع دائما", "تصبح صورة"], c: 0, level: "medium" },
+          { q: "أي سطر صحيح؟", a: ["let age = 15;", "let = age 15", "age let 15"], c: 0, level: "hard" },
+          { q: "متى نفضل const؟", a: ["عندما لا نريد تغيير القيمة", "عند حذف قيمة", "عند كتابة لون فقط"], c: 0, level: "hard" }
+        ]
       },
       {
-        title: "أنواع القيم: Number و String",
+        title: "أنواع القيم Number و String",
         tag: "الوحدة 3",
-        explanation: "في JavaScript توجد أنواع مختلفة من القيم. النوع number يُستخدم للأرقام، والنوع string يُستخدم للنصوص والكلمات والجمل. علامة + تجمع الأرقام، لكنها تربط النصوص معًا.",
-        terms: "number: قيمة رقمية. string: قيمة نصية. + مع الأرقام تعني جمع، ومع النصوص تعني ربط.",
+        explanation: "number يستخدم للأرقام، و string يستخدم للنصوص. علامة + تجمع الأرقام، لكنها تربط النصوص معا.",
+        terms: "number: قيمة رقمية. string: قيمة نصية. +: جمع مع الأرقام وربط مع النصوص.",
         code: "let age = 15;\nlet studentName = 'Sara';\nlet sentence = studentName + ' عمرها ' + age + ' سنة';\nconsole.log(sentence);",
-        activity: "اعرضوا قيماً مختلفة واسألوا الطلاب: هل هذه Number أم String؟ مثل: 17، '17'، 'Neta'، 90.",
+        activity: "اعرضوا قيما مختلفة واسألوا الطلاب هل هي Number أم String.",
+        challenge: "عرف اسم الطالب كنص، والعمر كرقم، ثم اطبع جملة كاملة. بعد ذلك أضف سنة واحدة للعمر واطبع الجملة مرة ثانية بالعمر الجديد.",
         questions: [
-          { q: "ما نوع القيمة 25؟", a: ["string", "number", "boolean"], c: 1 },
-          { q: "ما نوع القيمة 'Hello'؟", a: ["number", "string", "array"], c: 1 },
-          { q: "ماذا تفعل + مع النصوص؟", a: ["تطرح", "تربط النصوص", "توقف البرنامج"], c: 1 }
-        ],
-        challenge: "اكتب متغيرين: اسم الطالب وعمره، ثم اطبع جملة كاملة تجمع بينهما."
+          { q: "ما نوع القيمة 25؟", a: ["string", "number", "boolean"], c: 1, level: "easy" },
+          { q: "ما نوع القيمة 'Hello'؟", a: ["number", "string", "array"], c: 1, level: "easy" },
+          { q: "كيف نكتب النصوص؟", a: ["بين علامات اقتباس", "بدون أي رمز", "داخل [] فقط"], c: 0, level: "easy" },
+          { q: "ماذا تفعل + مع النصوص؟", a: ["تربط النصوص", "تحذف النص", "توقف البرنامج"], c: 0, level: "medium" },
+          { q: "ما نتيجة 5 + 3؟", a: ["8", "53", "خطأ"], c: 0, level: "medium" },
+          { q: "ما نتيجة '5' + '3'؟", a: ["8", "53", "2"], c: 1, level: "hard" },
+          { q: "أي سطر يعرف نصا؟", a: ["let name = 'Ali';", "let name = Ali;", "let 12 = name;"], c: 0, level: "hard" }
+        ]
       },
       {
         title: "Boolean و Modulo",
         tag: "الوحدة 4",
-        explanation: "Boolean هو نوع قيمة له احتمالان فقط: true أو false. أما العامل modulo ورمزه % فيعطينا باقي القسمة، ونستخدمه مثلًا لمعرفة إذا كان العدد زوجيًا أو فرديًا.",
-        terms: "boolean: قيمة منطقية true أو false. modulo %: يعطينا باقي القسمة. ===: مقارنة بين قيمتين.",
+        explanation: "Boolean هو نوع قيمة له احتمالان: true أو false. أما modulo ورمزه % فيعطينا باقي القسمة.",
+        terms: "boolean: true أو false. modulo %: باقي القسمة. ===: مقارنة دقيقة.",
         code: "let number = 8;\nlet isEven = number % 2 === 0;\nconsole.log(isEven);",
-        activity: "اختاروا أرقامًا مختلفة، وافحصوا هل هي زوجية أم فردية باستخدام باقي القسمة.",
+        activity: "اختاروا أرقاما وافحصوا هل هي زوجية أم فردية.",
+        challenge: "اكتب كود يفحص رقما معينا: إذا كان زوجيا اطبع 'عدد زوجي'، وإذا كان فرديا اطبع 'عدد فردي'. استخدم modulo وجملة شرطية.",
         questions: [
-          { q: "ما القيم الممكنة في Boolean؟", a: ["yes و no", "true و false", "1 و 2 فقط"], c: 1 },
-          { q: "ما نتيجة 10 % 2؟", a: ["0", "1", "2"], c: 0 },
-          { q: "إذا كان number % 2 === 0 فهذا يعني أن العدد...", a: ["فردي", "زوجي", "نصي"], c: 1 }
-        ],
-        challenge: "اكتب كود يفحص إذا كان رقم معيّن زوجيًا أو فرديًا."
+          { q: "ما القيم الممكنة في Boolean؟", a: ["true و false", "yes و no", "1 و 2 فقط"], c: 0, level: "easy" },
+          { q: "ما رمز modulo؟", a: ["%", "#", "@"], c: 0, level: "easy" },
+          { q: "ما نتيجة 10 % 2؟", a: ["0", "1", "2"], c: 0, level: "easy" },
+          { q: "إذا كان العدد يقبل القسمة على 2 بدون باقي فهو...", a: ["زوجي", "فردي", "نصي"], c: 0, level: "medium" },
+          { q: "ما نتيجة 7 % 2؟", a: ["0", "1", "7"], c: 1, level: "medium" },
+          { q: "أي تعبير يفحص أن العدد زوجي؟", a: ["num % 2 === 0", "num + 2", "num = text"], c: 0, level: "hard" },
+          { q: "ما نوع نتيجة 8 > 5؟", a: ["boolean", "string", "array"], c: 0, level: "hard" }
+        ]
       },
       {
         title: "الجمل الشرطية if / else",
         tag: "الوحدة 5",
-        explanation: "الجمل الشرطية تجعل البرنامج يتخذ قرارًا حسب الحالة. نستخدم if عندما نريد تنفيذ أمر إذا كان الشرط صحيحًا، ونستخدم else إذا كان الشرط غير صحيح.",
-        terms: "if: إذا تحقق الشرط. else: إذا لم يتحقق الشرط. condition: شرط. >= أكبر أو يساوي.",
+        explanation: "الجمل الشرطية تجعل البرنامج يتخذ قرارا. إذا تحقق الشرط ينفذ if، وإذا لم يتحقق ينفذ else.",
+        terms: "if: إذا تحقق الشرط. else: إذا لم يتحقق الشرط. condition: شرط.",
         code: "let grade = 75;\nif (grade >= 60) {\n  console.log('ناجح');\n} else {\n  console.log('حاول مرة أخرى');\n}",
-        activity: "حوّلوا مواقف يومية إلى شروط: إذا كان الجو ماطرًا، إذا كان الطالب حاضرًا، إذا كانت كلمة السر صحيحة.",
+        activity: "حولوا مواقف يومية إلى شروط: إذا كان الجو ماطرا، إذا كانت كلمة السر صحيحة.",
+        challenge: "اكتب برنامجا يفحص العلامة: إذا كانت 90 أو أكثر اطبع 'ممتاز'، إذا كانت 60 أو أكثر اطبع 'ناجح'، وإلا اطبع 'حاول مرة أخرى'.",
         questions: [
-          { q: "متى يتم تنفيذ كود if؟", a: ["عندما يكون الشرط صحيحًا", "عندما يكون الشرط خطأ", "دائمًا"], c: 0 },
-          { q: "متى يتم تنفيذ else؟", a: ["عندما يكون الشرط غير صحيح", "قبل if", "مع كل أمر"], c: 0 },
-          { q: "أي رمز يعني أكبر أو يساوي؟", a: [">=", "<=", "==="], c: 0 }
-        ],
-        challenge: "اكتب شرطًا: إذا كانت العلامة 60 أو أكثر اطبع ناجح، وإلا اطبع حاول مرة أخرى."
+          { q: "متى يتم تنفيذ if؟", a: ["عندما يكون الشرط صحيحا", "عندما يكون الشرط خطأ", "دائما"], c: 0, level: "easy" },
+          { q: "متى يتم تنفيذ else؟", a: ["عندما يكون الشرط غير صحيح", "قبل if", "دائما"], c: 0, level: "easy" },
+          { q: "أي كلمة تعني إذا؟", a: ["if", "else", "let"], c: 0, level: "easy" },
+          { q: "أي رمز يعني أكبر أو يساوي؟", a: [">=", "<=", "==="], c: 0, level: "medium" },
+          { q: "إذا كانت grade = 70 والشرط grade >= 60 فالنتيجة؟", a: ["صحيح", "خطأ", "نص"], c: 0, level: "medium" },
+          { q: "أي بناء صحيح؟", a: ["if (x > 5) { }", "if x > 5 { }", "if = x"], c: 0, level: "hard" },
+          { q: "لماذا نستخدم الشروط؟", a: ["لاتخاذ قرارات في البرنامج", "لتغيير اسم الملف", "لحذف JavaScript"], c: 0, level: "hard" }
+        ]
       },
       {
-        title: "الشروط المتداخلة و Switch",
+        title: "حلقات for و while",
         tag: "الوحدة 6",
-        explanation: "أحيانًا يكون القرار مركبًا ونحتاج إلى شرط داخل شرط، وهذا يسمى شروطًا متداخلة. أما switch فنستخدمه عندما يكون لدينا عدة حالات واضحة لقيمة واحدة.",
-        terms: "nested if: شرط داخل شرط. switch: اختيار بين عدة حالات. case: حالة معينة. break: إنهاء الحالة.",
-        code: "let day = 'Monday';\nswitch(day) {\n  case 'Monday':\n    console.log('يوجد لقاء');\n    break;\n  case 'Friday':\n    console.log('نشاط خاص');\n    break;\n  default:\n    console.log('لا يوجد لقاء');\n}",
-        activity: "ابنوا قرارًا حسب اليوم: يوم تعليم، يوم عطلة، يوم نشاط، ثم حوّلوه إلى switch.",
+        explanation: "الحلقات تكرر تنفيذ أوامر. while تعمل طالما الشرط صحيح، و for مناسبة عندما نعرف عدد مرات التكرار.",
+        terms: "loop: حلقة. while: طالما الشرط صحيح. for: تكرار بعدد معروف. i++: زيادة العداد.",
+        code: "for (let i = 1; i <= 5; i++) {\n  console.log(i);\n}",
+        activity: "اطبعوا كلمة Hello خمس مرات باستخدام حلقة.",
+        challenge: "اكتب حلقة تطبع الأرقام من 1 حتى 20، لكن تطبع فقط الأرقام الزوجية. استخدم شرطا داخل الحلقة.",
         questions: [
-          { q: "متى نستخدم الشروط المتداخلة؟", a: ["في الحالات البسيطة فقط", "عندما يكون القرار مركبًا", "بدل المتغيرات"], c: 1 },
-          { q: "متى يكون switch مناسبًا؟", a: ["عند وجود عدة حالات لقيمة واحدة", "عند تعريف نص", "عند كتابة تعليق"], c: 0 },
-          { q: "ما وظيفة break في switch؟", a: ["توقف الحالة الحالية", "تعرف متغيرًا", "تطبع رسالة"], c: 0 }
-        ],
-        challenge: "اكتب switch يفحص اليوم ويطبع نوع اللقاء المناسب."
+          { q: "ما وظيفة الحلقة؟", a: ["تكرار أوامر", "رسم صورة", "حذف ملف"], c: 0, level: "easy" },
+          { q: "أي حلقة مناسبة عند معرفة عدد التكرارات؟", a: ["for", "alert", "const"], c: 0, level: "easy" },
+          { q: "ماذا يعني i++؟", a: ["زيادة العداد", "حذف العداد", "تحويله لنص"], c: 0, level: "easy" },
+          { q: "متى نستخدم while؟", a: ["طالما الشرط صحيح", "فقط مع الصور", "بدون شرط"], c: 0, level: "medium" },
+          { q: "كم مرة تعمل for إذا كان i <= 5 وبدأت من 1؟", a: ["5", "4", "6"], c: 0, level: "medium" },
+          { q: "ما الخطر إذا لم نحدث شرط while؟", a: ["حلقة لا نهائية", "تصبح صورة", "يختفي المتصفح"], c: 0, level: "hard" },
+          { q: "أي بناء صحيح؟", a: ["for (let i=0; i<5; i++)", "for i 0 5", "for = i"], c: 0, level: "hard" }
+        ]
       },
       {
-        title: "حلقات while",
+        title: "المصفوفات Arrays والدوال Functions",
         tag: "الوحدة 7",
-        explanation: "الحلقة هي طريقة لتكرار تنفيذ أوامر عدة مرات. نستخدم while عندما نريد تنفيذ أمر طالما أن الشرط صحيح، ويجب تحديث الشرط حتى لا تصبح الحلقة لا نهائية.",
-        terms: "loop: حلقة تكرار. while: طالما الشرط صحيح. i++: زيادة العداد بواحد. infinite loop: حلقة لا نهائية.",
-        code: "let i = 1;\nwhile (i <= 5) {\n  console.log('مرحبا');\n  i++;\n}",
-        activity: "اعطوا تعليمات متكررة للوصول إلى هدف داخل الصف، ثم ناقشوا كيف تختصر الحلقة هذه التعليمات.",
+        explanation: "المصفوفة تحفظ عدة قيم داخل اسم واحد. الدالة تحفظ مجموعة أوامر تحت اسم واحد حتى نستدعيها أكثر من مرة.",
+        terms: "array: مصفوفة. index: موقع العنصر. length: عدد العناصر. function: دالة.",
+        code: "let students = ['Sara', 'Omar', 'Lina'];\nfunction printFirstStudent() {\n  console.log(students[0]);\n}\nprintFirstStudent();",
+        activity: "أنشئوا قائمة أسماء طلاب ثم اطبعوا الاسم الأول.",
+        challenge: "أنشئ مصفوفة فيها 4 أسماء، ثم اكتب دالة تستقبل المصفوفة وتطبع كل الأسماء باستخدام حلقة for.",
         questions: [
-          { q: "ما وظيفة الحلقة؟", a: ["تكرار أوامر", "تعريف لون", "حذف الصفحة"], c: 0 },
-          { q: "ماذا يعني i++؟", a: ["زيادة i بواحد", "إنقاص i", "إيقاف الحلقة"], c: 0 },
-          { q: "ماذا يحدث إذا لم نحدث الشرط؟", a: ["قد تصبح الحلقة لا نهائية", "ينحذف الكود", "يتغير الاسم"], c: 0 }
-        ],
-        challenge: "اكتب حلقة while تطبع الأرقام من 1 حتى 10."
-      },
-      {
-        title: "حلقات for",
-        tag: "الوحدة 8",
-        explanation: "حلقة for تُستخدم غالبًا عندما نعرف عدد مرات التكرار مسبقًا. في سطر واحد نكتب بداية العداد، شرط الاستمرار، وطريقة التحديث.",
-        terms: "for: حلقة تكرار بعدد معروف. i: عداد. i < 5: شرط الاستمرار. i++: زيادة العداد.",
-        code: "for (let i = 0; i < 5; i++) {\n  console.log('Hello');\n}",
-        activity: "قارنوا بين while و for: متى نستخدم كل واحدة؟ ثم اطبعوا أسماء الطلاب باستخدام for.",
-        questions: [
-          { q: "متى نستخدم for غالبًا؟", a: ["عندما نعرف عدد التكرارات", "عند كتابة نص فقط", "عند تعريف ثابت"], c: 0 },
-          { q: "أي جزء يحدد شرط الاستمرار؟", a: ["let i = 0", "i < 5", "i++"], c: 1 },
-          { q: "ما اسم المتغير الشائع كعداد؟", a: ["name", "i", "alert"], c: 1 }
-        ],
-        challenge: "اكتب حلقة for تطبع الأرقام الزوجية من 2 حتى 20."
-      },
-      {
-        title: "المصفوفات Arrays",
-        tag: "الوحدة 9",
-        explanation: "المصفوفة هي طريقة لحفظ عدة قيم داخل اسم واحد. كل قيمة داخل المصفوفة لها مكان يسمى index، والعد يبدأ من صفر. نستخدم length لمعرفة عدد العناصر.",
-        terms: "array: مصفوفة. index: موقع العنصر. length: عدد العناصر. []: أقواس المصفوفة.",
-        code: "let students = ['Sara', 'Omar', 'Lina'];\nconsole.log(students[0]);\nconsole.log(students.length);",
-        activity: "اذكروا أمثلة لقوائم في المواقع: صور، فيديوهات، منتجات، أسماء، أسئلة اختبار.",
-        questions: [
-          { q: "ما فائدة المصفوفة؟", a: ["حفظ قيمة واحدة فقط", "حفظ عدة قيم", "عرض رسالة فقط"], c: 1 },
-          { q: "من أي رقم يبدأ index؟", a: ["0", "1", "10"], c: 0 },
-          { q: "ما وظيفة length؟", a: ["تعطينا عدد العناصر", "تحذف العنصر", "تغير اللون"], c: 0 }
-        ],
-        challenge: "أنشئ مصفوفة فيها 4 أسماء، ثم اطبع الاسم الأول والأخير."
-      },
-      {
-        title: "أساليب المصفوفات Methods",
-        tag: "الوحدة 10",
-        explanation: "الأساليب هي أوامر جاهزة نستعملها مع الكائنات أو المصفوفات. نكتب اسم المصفوفة ثم نقطة ثم اسم الأسلوب. من الأساليب الشائعة push و pop.",
-        terms: "method: أسلوب جاهز. push: إضافة عنصر. pop: حذف آخر عنصر. dot notation: كتابة نقطة بين الاسم والأسلوب.",
-        code: "let fruits = ['apple', 'banana'];\nfruits.push('orange');\nconsole.log(fruits);\nfruits.pop();\nconsole.log(fruits);",
-        activity: "اعطوا كل مجموعة أسلوبًا واحدًا وتطلبون منها شرح ماذا يفعل مع مثال بسيط.",
-        questions: [
-          { q: "كيف نستدعي أسلوبًا على مصفوفة؟", a: ["اسم المصفوفة ثم نقطة", "فقط alert", "باستخدام HTML"], c: 0 },
-          { q: "ما وظيفة push؟", a: ["إضافة عنصر", "حذف كل العناصر", "فحص شرط"], c: 0 },
-          { q: "ما وظيفة pop؟", a: ["حذف آخر عنصر", "إضافة لون", "إنشاء دالة"], c: 0 }
-        ],
-        challenge: "أنشئ مصفوفة أطعمة، أضف عنصرًا جديدًا باستخدام push، ثم احذف آخر عنصر باستخدام pop."
-      },
-      {
-        title: "الدوال Functions",
-        tag: "الوحدة 11",
-        explanation: "الدالة هي مجموعة أوامر نعطيها اسمًا، ونستطيع تشغيلها أكثر من مرة. نستخدم الدوال حتى لا نكرر نفس الكود، وحتى يكون البرنامج منظمًا وسهل القراءة.",
-        terms: "function: دالة. parameter: قيمة تستقبلها الدالة. return: إرجاع نتيجة. call: استدعاء الدالة.",
-        code: "function sayHello(name) {\n  console.log('أهلاً ' + name);\n}\n\nsayHello('Neta');",
-        activity: "اشرحوا الدالة كأنها مقطع متكرر في أغنية: بدل كتابته كل مرة، نعطيه اسمًا ونستدعيه عند الحاجة.",
-        questions: [
-          { q: "لماذا نستخدم الدوال؟", a: ["لتنظيم وتكرار الكود بسهولة", "لحذف المتغيرات", "لإيقاف الموقع"], c: 0 },
-          { q: "ما هو parameter؟", a: ["قيمة تستقبلها الدالة", "لون الصفحة", "نوع من الصور"], c: 0 },
-          { q: "ما وظيفة return؟", a: ["إرجاع قيمة من الدالة", "طباعة عنوان", "تعريف مصفوفة"], c: 0 }
-        ],
-        challenge: "اكتب دالة تستقبل اسم الطالب وتطبع له رسالة تشجيع."
+          { q: "ما فائدة المصفوفة؟", a: ["حفظ عدة قيم", "حفظ لون فقط", "حذف صفحة"], c: 0, level: "easy" },
+          { q: "من أي رقم يبدأ index؟", a: ["0", "1", "10"], c: 0, level: "easy" },
+          { q: "ما وظيفة function؟", a: ["تجميع أوامر", "لون", "صورة"], c: 0, level: "easy" },
+          { q: "ما وظيفة length؟", a: ["عدد العناصر", "حذف العناصر", "تغيير الخط"], c: 0, level: "medium" },
+          { q: "كيف نصل للعنصر الأول؟", a: ["array[0]", "array[1]", "array.first"], c: 0, level: "medium" },
+          { q: "أي سطر يعرف مصفوفة؟", a: ["let a = [1,2,3];", "let a = 1,2,3;", "array let ="], c: 0, level: "hard" },
+          { q: "لماذا نستخدم الدوال؟", a: ["لتنظيم وتكرار الكود", "لحذف المصفوفة", "لإغلاق الموقع"], c: 0, level: "hard" }
+        ]
       }
     ];
 
-    let currentLesson = 0;
-    const completed = new Set();
-    const lessonButtons = document.getElementById("lessonButtons");
-    const lessonContent = document.getElementById("lessonContent");
+    var currentLesson = 0;
+    var lessonButtons = document.getElementById("lessonButtons");
+    var lessonContent = document.getElementById("lessonContent");
+    var prevButton = document.getElementById("prevButton");
+    var nextButton = document.getElementById("nextButton");
+    var finalButton = document.getElementById("finalButton");
 
     function clearElement(element) {
       while (element.firstChild) {
@@ -497,15 +346,15 @@
     }
 
     function createElement(tagName, className, textContent) {
-      const element = document.createElement(tagName);
+      var element = document.createElement(tagName);
       if (className) element.className = className;
       if (textContent !== undefined) element.textContent = textContent;
       return element;
     }
 
     function appendBox(parent, className, title, text) {
-      const box = createElement("div", className);
-      box.appendChild(createElement("div", "box-title", title));
+      var box = createElement("div", "box " + className);
+      box.appendChild(createElement("h3", "", title));
       box.appendChild(createElement("p", "", text));
       parent.appendChild(box);
       return box;
@@ -513,106 +362,120 @@
 
     function renderButtons() {
       clearElement(lessonButtons);
-      lessons.forEach((lesson, index) => {
-        const label = `${completed.has(index) ? "✓ " : ""}${lesson.tag}: ${lesson.title}`;
-        const button = createElement("button", "lesson-btn", label);
+      for (var i = 0; i < lessons.length; i += 1) {
+        var lesson = lessons[i];
+        var button = createElement("button", "lesson-btn", lesson.tag + ": " + lesson.title);
         button.type = "button";
-        if (index === currentLesson) button.classList.add("active");
-        button.addEventListener("click", () => {
-          currentLesson = index;
+        if (i === currentLesson) button.classList.add("active");
+        button.setAttribute("data-index", String(i));
+        button.addEventListener("click", function (event) {
+          currentLesson = Number(event.currentTarget.getAttribute("data-index"));
           render();
         });
         lessonButtons.appendChild(button);
-      });
+      }
     }
 
-    function renderQuestions(container, questions) {
-      questions.forEach((question, questionIndex) => {
-        const questionBox = createElement("div", "single-question");
-        questionBox.appendChild(createElement("p", "", `السؤال ${questionIndex + 1}: ${question.q}`));
+    function renderQuestions(parent, questions) {
+      var levels = { easy: [], medium: [], hard: [] };
+      var titles = { easy: "سهل", medium: "متوسط", hard: "صعب" };
+      var order = ["easy", "medium", "hard"];
 
-        const answersBox = createElement("div", "answers");
-        question.a.forEach((answer, answerIndex) => {
-          const button = createElement("button", "", answer);
-          button.type = "button";
-          button.addEventListener("click", () => checkAnswer(questionIndex, answerIndex));
-          answersBox.appendChild(button);
-        });
+      for (var i = 0; i < questions.length; i += 1) {
+        levels[questions[i].level].push(questions[i]);
+      }
 
-        questionBox.appendChild(answersBox);
-        const result = createElement("div", "result");
-        result.id = `result-${questionIndex}`;
-        questionBox.appendChild(result);
-        container.appendChild(questionBox);
-      });
+      for (var levelIndex = 0; levelIndex < order.length; levelIndex += 1) {
+        var levelName = order[levelIndex];
+        var list = levels[levelName];
+        if (list.length === 0) continue;
+
+        var section = createElement("div", "level " + levelName);
+        section.appendChild(createElement("h3", "", titles[levelName]));
+
+        for (var qIndex = 0; qIndex < list.length; qIndex += 1) {
+          var question = list[qIndex];
+          var card = createElement("div", "question-card");
+          card.appendChild(createElement("p", "", question.q));
+
+          var answers = createElement("div", "answers");
+          for (var aIndex = 0; aIndex < question.a.length; aIndex += 1) {
+            var answerButton = createElement("button", "", question.a[aIndex]);
+            answerButton.type = "button";
+            answerButton.setAttribute("data-correct", String(question.c));
+            answerButton.setAttribute("data-answer", String(aIndex));
+            answerButton.addEventListener("click", function (event) {
+              var selected = Number(event.currentTarget.getAttribute("data-answer"));
+              var correct = Number(event.currentTarget.getAttribute("data-correct"));
+              var result = event.currentTarget.parentElement.nextSibling;
+              var isCorrect = selected === correct;
+              result.style.color = isCorrect ? "#15803d" : "#b91c1c";
+              result.textContent = isCorrect ? "إجابة صحيحة، أحسنت!" : "قريب، حاول مرة أخرى.";
+            });
+            answers.appendChild(answerButton);
+          }
+          card.appendChild(answers);
+          card.appendChild(createElement("div", "result", ""));
+          section.appendChild(card);
+        }
+        parent.appendChild(section);
+      }
     }
 
-    function renderLesson() {
-      const lesson = lessons[currentLesson];
-      clearElement(lessonContent);
+    function renderCodeRunner(parent) {
+      var runner = createElement("div", "box runner-box");
+      runner.appendChild(createElement("h3", "", "مكان كتابة الكود"));
+      runner.appendChild(createElement("p", "", "اكتب كود JavaScript هنا ثم اضغط تشغيل. المثال الموجود بسيط وليس حل التحدي."));
 
-      lessonContent.appendChild(createElement("span", "tag", lesson.tag));
-      lessonContent.appendChild(createElement("h2", "", lesson.title));
-      lessonContent.appendChild(createElement("p", "", lesson.explanation));
-      appendBox(lessonContent, "activity-box terms-box", "شرح المصطلحات", lesson.terms);
-
-      const codeBox = createElement("pre", "code-box", lesson.code);
-      lessonContent.appendChild(codeBox);
-      appendBox(lessonContent, "activity-box", "نشاط", lesson.activity);
-
-      const quizBox = createElement("div", "quiz-box");
-      quizBox.appendChild(createElement("div", "box-title", "أسئلة"));
-      renderQuestions(quizBox, lesson.questions);
-      lessonContent.appendChild(quizBox);
-
-      appendBox(lessonContent, "challenge-box", "تحدي", lesson.challenge);
-
-      const runner = createElement("div", "code-runner");
-      runner.appendChild(createElement("div", "box-title", "مكان كتابة الكود"));
-      runner.appendChild(createElement("p", "", "اكتب كود JavaScript هنا ثم اضغط تشغيل. جرّب تعديل المثال أو حل التحدي."));
-
-      const textarea = document.createElement("textarea");
+      var textarea = document.createElement("textarea");
       textarea.id = "studentCode";
-      textarea.value = lesson.code;
+      textarea.value = starterCode;
       runner.appendChild(textarea);
 
-      const runButton = createElement("button", "run-btn", "تشغيل الكود");
+      var runButton = createElement("button", "main-btn", "تشغيل الكود");
       runButton.type = "button";
       runButton.addEventListener("click", runStudentCode);
       runner.appendChild(runButton);
 
-      const output = createElement("div", "output-box", "النتيجة ستظهر هنا...");
+      var output = createElement("div", "output-box", "النتيجة ستظهر هنا...");
       output.id = "codeOutput";
       runner.appendChild(output);
-      lessonContent.appendChild(runner);
-
-      const completeButton = createElement("button", "complete-btn", "أنهيت الدرس");
-      completeButton.type = "button";
-      completeButton.addEventListener("click", completeLesson);
-      lessonContent.appendChild(completeButton);
+      parent.appendChild(runner);
     }
 
-    function checkAnswer(questionIndex, answerIndex) {
-      const result = document.getElementById(`result-${questionIndex}`);
-      const question = lessons[currentLesson].questions[questionIndex];
-      const isCorrect = answerIndex === question.c;
-      result.style.color = isCorrect ? "#15803d" : "#b91c1c";
-      result.textContent = isCorrect ? "إجابة صحيحة، أحسنت!" : "قريب، حاول مرة أخرى.";
+    function renderLesson() {
+      var lesson = lessons[currentLesson];
+      clearElement(lessonContent);
+      lessonContent.appendChild(createElement("span", "tag", lesson.tag));
+      lessonContent.appendChild(createElement("h2", "", lesson.title));
+      lessonContent.appendChild(createElement("p", "", lesson.explanation));
+      appendBox(lessonContent, "terms-box", "شرح المصطلحات", lesson.terms);
+      lessonContent.appendChild(createElement("pre", "box example-box", lesson.code));
+      appendBox(lessonContent, "activity-box", "نشاط", lesson.activity);
+
+      var questionsBox = createElement("div", "box");
+      questionsBox.appendChild(createElement("h3", "", "أسئلة بمستويات"));
+      renderQuestions(questionsBox, lesson.questions);
+      lessonContent.appendChild(questionsBox);
+
+      appendBox(lessonContent, "challenge-box", "تحدي", lesson.challenge);
+      renderCodeRunner(lessonContent);
     }
 
     function runStudentCode() {
-      const textarea = document.getElementById("studentCode");
-      const output = document.getElementById("codeOutput");
-      const code = textarea.value;
-      const messages = [];
-      const originalLog = console.log;
-      const originalAlert = window.alert;
+      var textarea = document.getElementById("studentCode");
+      var output = document.getElementById("codeOutput");
+      var code = textarea.value;
+      var messages = [];
+      var originalLog = console.log;
+      var originalAlert = window.alert;
 
-      console.log = function(...args) {
-        messages.push(args.map(String).join(" "));
+      console.log = function () {
+        var args = Array.prototype.slice.call(arguments).map(String);
+        messages.push(args.join(" "));
       };
 
-      window.alert = function(message) {
+      window.alert = function (message) {
         messages.push("alert: " + String(message));
       };
 
@@ -629,70 +492,9 @@
       }
     }
 
-    function showFinalTest() {
-      clearElement(lessonContent);
-      const finalQuestions = lessons.map((lesson) => lesson.questions[0]);
-
-      lessonContent.appendChild(createElement("h2", "", "الاختبار النهائي"));
-      lessonContent.appendChild(createElement("p", "", "أجب عن الأسئلة التالية بعد إنهاء الوحدات. في النهاية اضغط على زر عرض النتيجة."));
-
-      const finalBox = createElement("div", "final-test-box");
-      finalQuestions.forEach((question, questionIndex) => {
-        const questionBox = createElement("div", "single-question");
-        questionBox.appendChild(createElement("p", "", `السؤال ${questionIndex + 1}: ${question.q}`));
-
-        question.a.forEach((answer, answerIndex) => {
-          const label = createElement("label", "final-option");
-          const input = document.createElement("input");
-          input.type = "radio";
-          input.name = `final-${questionIndex}`;
-          input.value = String(answerIndex);
-          label.appendChild(input);
-          label.appendChild(document.createTextNode(" " + answer));
-          questionBox.appendChild(label);
-        });
-
-        finalBox.appendChild(questionBox);
-      });
-
-      const finalButton = createElement("button", "final-btn", "عرض النتيجة");
-      finalButton.type = "button";
-      finalButton.addEventListener("click", checkFinalTest);
-      finalBox.appendChild(finalButton);
-
-      const finalResult = createElement("div", "result");
-      finalResult.id = "finalResult";
-      finalResult.style.fontSize = "20px";
-      finalResult.style.marginTop = "15px";
-      finalBox.appendChild(finalResult);
-      lessonContent.appendChild(finalBox);
-    }
-
-    function checkFinalTest() {
-      const finalQuestions = lessons.map((lesson) => lesson.questions[0]);
-      let score = 0;
-
-      finalQuestions.forEach((question, questionIndex) => {
-        const selected = document.querySelector(`input[name="final-${questionIndex}"]:checked`);
-        if (selected && Number(selected.value) === question.c) {
-          score += 1;
-        }
-      });
-
-      const percent = Math.round((score / finalQuestions.length) * 100);
-      const finalResult = document.getElementById("finalResult");
-      finalResult.style.color = percent >= 60 ? "#15803d" : "#b91c1c";
-      finalResult.textContent = `نتيجتك: ${score} من ${finalQuestions.length} (${percent}%)`;
-    }
-
-    function completeLesson() {
-      completed.add(currentLesson);
-      renderButtons();
-    }
-
-    function goHome() {
-      currentLesson = 0;
-      render();
+    function updateNav() {
+      prevButton.style.display = currentLesson === 0 ? "none" : "inline-block";
+      nextButton.style.display = currentLesson === lessons.length - 1 ? "none" : "inline-block";
     }
 
     function nextLesson() {
@@ -709,43 +511,104 @@
       }
     }
 
+    function showFinalTest() {
+      clearElement(lessonContent);
+      lessonContent.appendChild(createElement("h2", "", "الاختبار النهائي"));
+      lessonContent.appendChild(createElement("p", "", "أجب عن سؤال واحد من كل وحدة، ثم اضغط عرض النتيجة."));
+
+      var finalBox = createElement("div", "box final-box");
+      for (var i = 0; i < lessons.length; i += 1) {
+        var question = lessons[i].questions[0];
+        var card = createElement("div", "question-card");
+        card.appendChild(createElement("p", "", "السؤال " + (i + 1) + ": " + question.q));
+
+        for (var a = 0; a < question.a.length; a += 1) {
+          var label = createElement("label", "final-option");
+          var input = document.createElement("input");
+          input.type = "radio";
+          input.name = "final-" + i;
+          input.value = String(a);
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(" " + question.a[a]));
+          card.appendChild(label);
+        }
+        finalBox.appendChild(card);
+      }
+
+      var button = createElement("button", "main-btn", "عرض النتيجة");
+      button.type = "button";
+      button.addEventListener("click", checkFinalTest);
+      finalBox.appendChild(button);
+
+      var result = createElement("div", "result", "");
+      result.id = "finalResult";
+      finalBox.appendChild(result);
+      lessonContent.appendChild(finalBox);
+
+      prevButton.style.display = "none";
+      nextButton.style.display = "none";
+    }
+
+    function checkFinalTest() {
+      var score = 0;
+      for (var i = 0; i < lessons.length; i += 1) {
+        var selected = document.querySelector("input[name='final-" + i + "']:checked");
+        if (selected && Number(selected.value) === lessons[i].questions[0].c) score += 1;
+      }
+      var percent = Math.round((score / lessons.length) * 100);
+      var result = document.getElementById("finalResult");
+      result.style.color = percent >= 60 ? "#15803d" : "#b91c1c";
+      result.textContent = "نتيجتك: " + score + " من " + lessons.length + " (" + percent + "%)";
+    }
+
     function render() {
       renderButtons();
       renderLesson();
+      updateNav();
     }
 
     function validateLessonsData() {
-      console.assert(Array.isArray(lessons), "lessons يجب أن تكون مصفوفة.");
-      console.assert(lessons.length === 11, "يجب أن تحتوي البيانات على 11 وحدة.");
-      lessons.forEach((lesson, index) => {
-        console.assert(typeof lesson.title === "string" && lesson.title.length > 0, `عنوان الوحدة ${index + 1} غير صالح.`);
-        console.assert(typeof lesson.tag === "string" && lesson.tag.length > 0, `وسم الوحدة ${index + 1} غير صالح.`);
-        console.assert(typeof lesson.code === "string", `كود الوحدة ${index + 1} يجب أن يكون نصًا.`);
-        console.assert(Array.isArray(lesson.questions) && lesson.questions.length >= 3, `الوحدة ${index + 1} تحتاج 3 أسئلة على الأقل.`);
-        lesson.questions.forEach((question, qIndex) => {
-          console.assert(typeof question.q === "string" && question.q.length > 0, `نص السؤال ${qIndex + 1} في الوحدة ${index + 1} غير صالح.`);
-          console.assert(Array.isArray(question.a) && question.a.length >= 2, `السؤال ${qIndex + 1} في الوحدة ${index + 1} يحتاج إجابات.`);
-          console.assert(Number.isInteger(question.c) && question.c >= 0 && question.c < question.a.length, `الإجابة الصحيحة للسؤال ${qIndex + 1} في الوحدة ${index + 1} غير صالحة.`);
-        });
-      });
+      console.assert(Array.isArray(lessons), "lessons must be an array");
+      console.assert(lessons.length >= 1, "there must be at least one lesson");
+      console.assert(typeof starterCode === "string" && starterCode.indexOf("\\n") === -1, "starterCode should be a normal string with actual newline only");
+      for (var i = 0; i < lessons.length; i += 1) {
+        var lesson = lessons[i];
+        console.assert(typeof lesson.title === "string" && lesson.title.length > 0, "lesson title is invalid");
+        console.assert(typeof lesson.tag === "string" && lesson.tag.length > 0, "lesson tag is invalid");
+        console.assert(typeof lesson.code === "string", "lesson code must be a string");
+        console.assert(Array.isArray(lesson.questions), "lesson questions must be an array");
+        console.assert(lesson.questions.length >= 7, "lesson must include at least seven questions");
+        var levelCount = { easy: 0, medium: 0, hard: 0 };
+        for (var q = 0; q < lesson.questions.length; q += 1) {
+          var question = lesson.questions[q];
+          console.assert(typeof question.q === "string" && question.q.length > 0, "question text is invalid");
+          console.assert(Array.isArray(question.a) && question.a.length >= 2, "question answers are invalid");
+          console.assert(Number.isInteger(question.c) && question.c >= 0 && question.c < question.a.length, "correct answer index is invalid");
+          console.assert(question.level === "easy" || question.level === "medium" || question.level === "hard", "question level is invalid");
+          levelCount[question.level] += 1;
+        }
+        console.assert(levelCount.easy > 0, "easy questions are missing");
+        console.assert(levelCount.medium > 0, "medium questions are missing");
+        console.assert(levelCount.hard > 0, "hard questions are missing");
+      }
     }
 
     function runSmokeTests() {
       validateLessonsData();
-      console.assert(typeof render === "function", "دالة render غير معرفة.");
-      console.assert(typeof renderButtons === "function", "دالة renderButtons غير معرفة.");
-      console.assert(typeof renderLesson === "function", "دالة renderLesson غير معرفة.");
-      console.assert(typeof runStudentCode === "function", "محرر الكود غير جاهز.");
-      console.assert(typeof showFinalTest === "function", "الاختبار النهائي غير جاهز.");
-      console.assert(Boolean(document.getElementById("lessonButtons")), "قائمة الدروس غير موجودة.");
-      console.assert(Boolean(document.getElementById("lessonContent")), "منطقة المحتوى غير موجودة.");
-      console.log("تم تشغيل اختبارات الموقع الداخلية بنجاح.");
+      console.assert(typeof render === "function", "render is missing");
+      console.assert(typeof renderButtons === "function", "renderButtons is missing");
+      console.assert(typeof renderLesson === "function", "renderLesson is missing");
+      console.assert(typeof renderQuestions === "function", "renderQuestions is missing");
+      console.assert(typeof renderCodeRunner === "function", "renderCodeRunner is missing");
+      console.assert(typeof runStudentCode === "function", "runStudentCode is missing");
+      console.assert(Boolean(lessonButtons), "lessonButtons element is missing");
+      console.assert(Boolean(lessonContent), "lessonContent element is missing");
+      console.log("tests ok");
     }
 
-    document.getElementById("homeButton").addEventListener("click", goHome);
-    document.getElementById("prevButton").addEventListener("click", prevLesson);
-    document.getElementById("nextButton").addEventListener("click", nextLesson);
-    document.getElementById("finalButton").addEventListener("click", showFinalTest);
+    nextButton.addEventListener("click", nextLesson);
+    prevButton.addEventListener("click", prevLesson);
+    finalButton.addEventListener("click", showFinalTest);
 
     runSmokeTests();
     render();
