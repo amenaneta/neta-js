@@ -1,1 +1,599 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>رحلة JavaScript التفاعلية</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #eef6ff, #f7ecff);
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      color: white;
+      padding: 35px 20px;
+      text-align: center;
+      border-bottom-left-radius: 35px;
+      border-bottom-right-radius: 35px;
+    }
+
+    header h1 {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 18px;
+      opacity: 0.95;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: 30px auto;
+      padding: 0 18px;
+    }
+
+    .top-card {
+      background: white;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+      margin-bottom: 25px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .top-card h2 {
+      color: #4f46e5;
+      margin-bottom: 10px;
+      font-size: 26px;
+    }
+
+    .top-card p {
+      line-height: 1.8;
+      font-size: 17px;
+    }
+
+    .progress-box {
+      background: #f3f4f6;
+      border-radius: 20px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .progress-box strong {
+      display: block;
+      font-size: 32px;
+      color: #9333ea;
+      margin-bottom: 5px;
+    }
+
+    .progress-bar {
+      height: 12px;
+      background: #e5e7eb;
+      border-radius: 20px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4f46e5, #9333ea);
+      transition: 0.4s;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 22px;
+    }
+
+    .lessons-list {
+      background: white;
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+      height: fit-content;
+      position: sticky;
+      top: 20px;
+    }
+
+    .lessons-list h3 {
+      margin-bottom: 15px;
+      color: #111827;
+    }
+
+    .lesson-btn {
+      width: 100%;
+      border: none;
+      background: #f3f4f6;
+      padding: 13px;
+      margin-bottom: 10px;
+      border-radius: 16px;
+      text-align: right;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.2s;
+      color: #1f2937;
+    }
+
+    .lesson-btn:hover,
+    .lesson-btn.active {
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .lesson-content {
+      background: white;
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .tag {
+      display: inline-block;
+      background: #ede9fe;
+      color: #6d28d9;
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .lesson-content h2 {
+      font-size: 30px;
+      color: #4f46e5;
+      margin-bottom: 12px;
+    }
+
+    .lesson-content p {
+      line-height: 1.9;
+      font-size: 17px;
+      margin-bottom: 16px;
+    }
+
+    .code-box {
+      background: #111827;
+      color: #d1fae5;
+      border-radius: 18px;
+      padding: 18px;
+      direction: ltr;
+      text-align: left;
+      overflow-x: auto;
+      margin: 15px 0;
+      font-size: 15px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .activity-box,
+    .quiz-box,
+    .challenge-box {
+      border-radius: 20px;
+      padding: 18px;
+      margin-top: 18px;
+    }
+
+    .activity-box {
+      background: #eef2ff;
+    }
+
+    .quiz-box {
+      background: #fff7ed;
+    }
+
+    .challenge-box {
+      background: #ecfdf5;
+    }
+
+    .box-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+      text-align: right;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+
+    .answers button:hover {
+      background: #f3f4f6;
+    }
+
+    .result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .complete-btn {
+      margin-top: 22px;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: white;
+      border: none;
+      padding: 14px 22px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    .complete-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.25);
+    }
+
+    .footer-note {
+      text-align: center;
+      margin: 30px 0 15px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    @media (max-width: 850px) {
+      .top-card,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .lessons-list {
+        position: static;
+      }
+
+      header h1 {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>رحلة JavaScript التفاعلية</h1>
+    <p>تعلم البرمجة خطوة بخطوة من خلال الشرح، التجربة، والأسئلة السريعة</p>
+  </header>
+
+  <main class="container">
+    <section class="top-card">
+      <div>
+        <h2>أهلاً بكم في موقع التعلم</h2>
+        <p>
+          هذا الموقع يساعد الطلاب على فهم أساسيات JavaScript بطريقة بسيطة وتفاعلية.
+          اختاروا درسًا من القائمة، اقرأوا الشرح، جرّبوا المثال، ثم أجيبوا عن السؤال وأنهوا التحدي.
+        </p>
+      </div>
+      <div class="progress-box">
+        <strong id="progressNumber">0%</strong>
+        <span>نسبة إنجاز الدروس</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="lessons-list">
+        <h3>الوحدات التعليمية</h3>
+        <div id="lessonButtons"></div>
+      </aside>
+
+      <section class="lesson-content" id="lessonContent"></section>
+    </section>
+
+    <p class="footer-note">تم إعداد الموقع كنسخة تعليمية أولية قابلة للتطوير والإضافة.</p>
+  </main>
+
+  <script>
+    const lessons = [
+      { title: "مقدمة JavaScript",
+        tag: "الوحدة 1",
+        explanation: `JavaScript هي لغة برمجة تُستخدم لإضافة التفاعل داخل المواقع. عندما نتعلم HTML فنحن نبني هيكل الصفحة، وعندما نتعلم CSS فنحن نصمم شكل الصفحة، أما JavaScript فهي التي تجعل الصفحة تتحرك وتتفاعل مع المستخدم. من خلال JavaScript نستطيع عرض رسالة، استقبال اسم الطالب، تغيير لون عنصر، تشغيل لعبة، فحص إجابة، أو بناء تحديات تعليمية.`,
+        code: `alert('أهلاً بكم في عالم JavaScript');
+console.log('هذه رسالة تظهر للمطور');`,
+        activity: "ناقشوا مع الطلاب: أين نرى JavaScript في حياتنا اليومية؟ أمثلة: زر تسجيل الدخول، لعبة، اختبار إلكتروني، سلة مشتريات، أو تغيير صورة عند الضغط.",
+        questions: [
+          { q: "ما وظيفة JavaScript في الموقع؟", a: ["تصميم الألوان فقط", "إضافة التفاعل", "كتابة النصوص فقط"], c: 1 },
+          { q: "أي أمر يعرض رسالة للمستخدم؟", a: ["console.log", "alert", "let"], c: 1 },
+          { q: "أين تظهر رسالة console.log؟", a: ["داخل الصفحة", "داخل أدوات المطور", "في عنوان الموقع"], c: 1 }
+        ],
+        challenge: "اكتب كود يعرض رسالة ترحيب باسمك باستخدام alert."
+      },
+      {
+        title: "المتغيرات والثوابت",
+        tag: "الوحدة 2",
+        explanation: `المتغيرات والثوابت هي طريقة لحفظ المعلومات داخل البرنامج. المتغير يشبه صندوقًا نحفظ فيه قيمة ويمكن أن تتغير أثناء تشغيل الموقع، مثل اسم الطالب أو عدد النقاط. نستخدم let عندما نريد تعريف متغير قابل للتغيير. أما الثابت فهو قيمة لا نريد تغييرها، مثل اسم المشروع أو عدد أيام الأسبوع، ونستخدم const لتعريفه.`,
+        code: `let studentName = 'Amina';
+let points = 10;
+const PROJECT_NAME = 'Neta';
+console.log(studentName + ' لديها ' + points + ' نقاط');`,
+        activity: "اكتبوا أمثلة من حياتنا: معلومات تتغير مثل العمر والنقاط، ومعلومات ثابتة مثل اسم الفرع أو اسم الدورة.",
+        questions: [
+          { q: "أي كلمة نستخدم لتعريف متغير؟", a: ["let", "const", "alert"], c: 0 },
+          { q: "أي كلمة نستخدم لتعريف ثابت؟", a: ["prompt", "const", "console"], c: 1 },
+          { q: "أي مثال مناسب كمتغير؟", a: ["اسم المشروع", "عدد نقاط الطالب", "عدد أيام الأسبوع"], c: 1 }
+        ],
+        challenge: "عرّف متغيرًا باسم الطالب وثابتًا باسم الفرع، ثم اطبع جملة ترحيب."
+      },
+      {
+        title: "أنواع القيم: Number و String",
+        tag: "الوحدة 3",
+        explanation: `في JavaScript توجد أنواع مختلفة من القيم. النوع number يُستخدم للأرقام، مثل العمر، العلامة، عدد الطلاب، أو السعر. نستطيع إجراء عمليات حسابية على الأرقام. النوع string يُستخدم للنصوص والكلمات والجمل، ويجب كتابته بين علامات اقتباس. علامة + مع الأرقام تعني جمعًا حسابيًا، أما مع النصوص فتعني ربط النصوص معًا.`,
+        code: `let age = 15;
+let studentName = 'Sara';
+let sentence = studentName + ' عمرها ' + age + ' سنة';
+console.log(sentence);`,
+        activity: "اعرضوا قيماً مختلفة واسألوا الطلاب: هل هذه Number أم String؟ مثل: 17، '17'، 'Neta'، 90.",
+        questions: [
+          { q: "ما نوع القيمة 25؟", a: ["string", "number", "boolean"], c: 1 },
+          { q: "ما نوع القيمة 'Hello'؟", a: ["number", "string", "array"], c: 1 },
+          { q: "ماذا تفعل + مع النصوص؟", a: ["تطرح", "تربط النصوص", "توقف البرنامج"], c: 1 }
+        ],
+        challenge: "اكتب متغيرين: اسم الطالب وعمره، ثم اطبع جملة كاملة تجمع بينهما."
+      },
+      {
+        title: "Boolean و Modulo",
+        tag: "الوحدة 4",
+        explanation: `Boolean هو نوع قيمة له احتمالان فقط: true أو false. نستخدمه عندما نريد فحص شرط، مثل: هل الطالب ناجح؟ هل العدد أكبر من 10؟ أما العامل modulo ورمزه % فيعطينا باقي القسمة. إذا كان باقي قسمة العدد على 2 يساوي 0، فهذا يعني أن العدد زوجي.`,
+        code: `let number = 8;
+let isEven = number % 2 === 0;
+console.log(isEven);`,
+        activity: "اختاروا أرقامًا مختلفة، وافحصوا هل هي زوجية أم فردية باستخدام باقي القسمة.",
+        questions: [
+          { q: "ما القيم الممكنة في Boolean؟", a: ["yes و no", "true و false", "1 و 2 فقط"], c: 1 },
+          { q: "ما نتيجة 10 % 2؟", a: ["0", "1", "2"], c: 0 },
+          { q: "إذا كان number % 2 === 0 فهذا يعني أن العدد...", a: ["فردي", "زوجي", "نصي"], c: 1 }
+        ],
+        challenge: "اكتب كود يفحص إذا كان رقم معيّن زوجيًا أو فرديًا."
+      },
+      {
+        title: "الجمل الشرطية if / else",
+        tag: "الوحدة 5",
+        explanation: `الجمل الشرطية تجعل البرنامج يتخذ قرارًا حسب الحالة. نستخدم if عندما نريد تنفيذ أمر إذا كان الشرط صحيحًا. ونستخدم else عندما نريد تنفيذ أمر آخر إذا كان الشرط غير صحيح. مثال: إذا كانت العلامة 60 أو أكثر فالطالب ناجح، وإلا يحتاج إلى تحسين.`,
+        code: `let grade = 75;
+if (grade >= 60) {
+  console.log('ناجح');
+} else {
+  console.log('حاول مرة أخرى');
+}`,
+        activity: "حوّلوا مواقف يومية إلى شروط: إذا كان الجو ماطرًا، إذا كان الطالب حاضرًا، إذا كانت كلمة السر صحيحة.",
+        questions: [
+          { q: "متى يتم تنفيذ كود if؟", a: ["عندما يكون الشرط صحيحًا", "عندما يكون الشرط خطأ", "دائمًا"], c: 0 },
+          { q: "متى يتم تنفيذ else؟", a: ["عندما يكون الشرط غير صحيح", "قبل if", "مع كل أمر"], c: 0 },
+          { q: "أي رمز يعني أكبر أو يساوي؟", a: [">=", "<=", "==="], c: 0 }
+        ],
+        challenge: "اكتب شرطًا: إذا كانت العلامة 60 أو أكثر اطبع ناجح، وإلا اطبع حاول مرة أخرى."
+      },
+      {
+        title: "الشروط المتداخلة و Switch",
+        tag: "الوحدة 6",
+        explanation: `أحيانًا يكون القرار في البرنامج مركبًا، أي أننا نحتاج إلى شرط داخل شرط. هذا يسمى شروطًا متداخلة. أما switch فنستخدمه عندما يكون لدينا عدة حالات واضحة لقيمة واحدة، مثل أيام الأسبوع أو اختيار مستوى في لعبة.`,
+        code: `let day = 'Monday';
+switch(day) {
+  case 'Monday':
+    console.log('يوجد لقاء');
+    break;
+  case 'Friday':
+    console.log('نشاط خاص');
+    break;
+  default:
+    console.log('لا يوجد لقاء');
+}`,
+        activity: "اطلبوا من الطلاب بناء قرار حسب اليوم: يوم تعليم، يوم عطلة، يوم نشاط، ثم حوّلوه إلى switch.",
+        questions: [
+          { q: "متى نستخدم الشروط المتداخلة؟", a: ["في الحالات البسيطة فقط", "عندما يكون القرار مركبًا", "بدل المتغيرات"], c: 1 },
+          { q: "متى يكون switch مناسبًا؟", a: ["عند وجود عدة حالات لقيمة واحدة", "عند تعريف نص", "عند كتابة تعليق"], c: 0 },
+          { q: "ما وظيفة break في switch؟", a: ["توقف الحالة الحالية", "تعرف متغيرًا", "تطبع رسالة"], c: 0 }
+        ],
+        challenge: "اكتب switch يفحص اليوم ويطبع نوع اللقاء المناسب."
+      },
+      {
+        title: "حلقات while",
+        tag: "الوحدة 7",
+        explanation: `الحلقة هي طريقة لتكرار تنفيذ أوامر عدة مرات. نستخدم while عندما نريد تنفيذ أمر طالما أن الشرط صحيح. يجب الانتباه إلى تحديث الشرط داخل الحلقة حتى لا تصبح الحلقة لا نهائية.`,
+        code: `let i = 1;
+while (i <= 5) {
+  console.log('مرحبا');
+  i++;
+}`,
+        activity: "اعطوا تعليمات متكررة للوصول إلى هدف داخل الصف، ثم ناقشوا كيف تختصر الحلقة هذه التعليمات.",
+        questions: [
+          { q: "ما وظيفة الحلقة؟", a: ["تكرار أوامر", "تعريف لون", "حذف الصفحة"], c: 0 },
+          { q: "ماذا يعني i++؟", a: ["زيادة i بواحد", "إنقاص i", "إيقاف الحلقة"], c: 0 },
+          { q: "ماذا يحدث إذا لم نحدث الشرط؟", a: ["قد تصبح الحلقة لا نهائية", "ينحذف الكود", "يتغير الاسم"], c: 0 }
+        ],
+        challenge: "اكتب حلقة while تطبع الأرقام من 1 حتى 10."
+      },
+      {
+        title: "حلقات for",
+        tag: "الوحدة 8",
+        explanation: `حلقة for تُستخدم غالبًا عندما نعرف عدد مرات التكرار مسبقًا. في سطر واحد نكتب بداية العداد، شرط الاستمرار، وطريقة التحديث. لذلك تعتبر for مناسبة لطباعة شيء عددًا محددًا من المرات، أو المرور على عناصر داخل مصفوفة.`,
+        code: `for (let i = 0; i < 5; i++) {
+  console.log('Hello');
+}`,
+        activity: "قارنوا بين while و for: متى نستخدم كل واحدة؟ ثم اطبعوا أسماء الطلاب باستخدام for.",
+        questions: [
+          { q: "متى نستخدم for غالبًا؟", a: ["عندما نعرف عدد التكرارات", "عند كتابة نص فقط", "عند تعريف ثابت"], c: 0 },
+          { q: "أي جزء يحدد شرط الاستمرار؟", a: ["let i = 0", "i < 5", "i++"], c: 1 },
+          { q: "ما اسم المتغير الشائع كعداد؟", a: ["name", "i", "alert"], c: 1 }
+        ],
+        challenge: "اكتب حلقة for تطبع الأرقام الزوجية من 2 حتى 20."
+      },
+      {
+        title: "المصفوفات Arrays",
+        tag: "الوحدة 9",
+        explanation: `المصفوفة هي طريقة لحفظ عدة قيم داخل اسم واحد. كل قيمة داخل المصفوفة لها مكان يسمى index، والعد يبدأ من صفر. نستخدم length لمعرفة عدد العناصر داخل المصفوفة. المصفوفات مهمة لأنها تحفظ قوائم مثل أسماء، صور، منتجات، علامات، أو أسئلة.`,
+        code: `let students = ['Sara', 'Omar', 'Lina'];
+console.log(students[0]);
+console.log(students.length);`,
+        activity: "اطلبوا من الطلاب ذكر أمثلة لقوائم في المواقع: صور، فيديوهات، منتجات، أسماء، أسئلة اختبار.",
+        questions: [
+          { q: "ما فائدة المصفوفة؟", a: ["حفظ قيمة واحدة فقط", "حفظ عدة قيم", "عرض رسالة فقط"], c: 1 },
+          { q: "من أي رقم يبدأ index؟", a: ["0", "1", "10"], c: 0 },
+          { q: "ما وظيفة length؟", a: ["تعطينا عدد العناصر", "تحذف العنصر", "تغير اللون"], c: 0 }
+        ],
+        challenge: "أنشئ مصفوفة فيها 4 أسماء، ثم اطبع الاسم الأول والأخير."
+      },
+      {
+        title: "أساليب المصفوفات Methods",
+        tag: "الوحدة 10",
+        explanation: `الأساليب هي أوامر جاهزة نستعملها مع الكائنات أو المصفوفات. نكتب اسم المصفوفة ثم نقطة ثم اسم الأسلوب. من الأساليب الشائعة: push لإضافة عنصر، pop لحذف آخر عنصر، و toString لتحويل المصفوفة إلى نص.`,
+        code: `let fruits = ['apple', 'banana'];
+fruits.push('orange');
+console.log(fruits);
+fruits.pop();
+console.log(fruits);`,
+        activity: "اعطوا كل مجموعة أسلوبًا واحدًا وتطلبون منها شرح ماذا يفعل مع مثال بسيط.",
+        questions: [
+          { q: "كيف نستدعي أسلوبًا على مصفوفة؟", a: ["اسم المصفوفة ثم نقطة", "فقط alert", "باستخدام HTML"], c: 0 },
+          { q: "ما وظيفة push؟", a: ["إضافة عنصر", "حذف كل العناصر", "فحص شرط"], c: 0 },
+          { q: "ما وظيفة pop؟", a: ["حذف آخر عنصر", "إضافة لون", "إنشاء دالة"], c: 0 }
+        ],
+        challenge: "أنشئ مصفوفة أطعمة، أضف عنصرًا جديدًا باستخدام push، ثم احذف آخر عنصر باستخدام pop."
+      },
+      {
+        title: "الدوال Functions",
+        tag: "الوحدة 11",
+        explanation: `الدالة هي مجموعة أوامر نعطيها اسمًا، ونستطيع تشغيلها أكثر من مرة. نستخدم الدوال حتى لا نكرر نفس الكود، وحتى يكون البرنامج منظمًا وسهل القراءة. يمكن للدالة أن تستقبل معلومات تسمى parameters، ويمكن للدالة أن تعيد نتيجة باستخدام return.`,
+        code: `function sayHello(name) {
+  console.log('أهلاً ' + name);
+}
+
+sayHello('Neta');`,
+        activity: "اشرحوا الدالة كأنها مقطع متكرر في أغنية: بدل كتابته كل مرة، نعطيه اسمًا ونستدعيه عند الحاجة.",
+        questions: [
+          { q: "لماذا نستخدم الدوال؟", a: ["لتنظيم وتكرار الكود بسهولة", "لحذف المتغيرات", "لإيقاف الموقع"], c: 0 },
+          { q: "ما هو parameter؟", a: ["قيمة تستقبلها الدالة", "لون الصفحة", "نوع من الصور"], c: 0 },
+          { q: "ما وظيفة return؟", a: ["إرجاع قيمة من الدالة", "طباعة عنوان", "تعريف مصفوفة"], c: 0 }
+        ],
+        challenge: "اكتب دالة تستقبل اسم الطالب وتطبع له رسالة تشجيع."
+      }
+    ];
+
+    let currentLesson = 0;
+    const completed = new Set();
+
+    const lessonButtons = document.getElementById("lessonButtons");
+    const lessonContent = document.getElementById("lessonContent");
+    const progressNumber = document.getElementById("progressNumber");
+    const progressFill = document.getElementById("progressFill");
+
+    function renderButtons() {
+      lessonButtons.innerHTML = "";
+      lessons.forEach((lesson, index) => {
+        const btn = document.createElement("button");
+        btn.className = "lesson-btn" + (index === currentLesson ? " active" : "");
+        btn.textContent = `${completed.has(index) ? "✓ " : ""}${lesson.tag}: ${lesson.title}`;
+        btn.onclick = () => {
+          currentLesson = index;
+          render();
+        };
+        lessonButtons.appendChild(btn);
+      });
+    }
+
+    function renderQuestions(questions) {
+      return questions.map((question, qIndex) => `
+        <div class="single-question">
+          <p><strong>السؤال ${qIndex + 1}:</strong> ${question.q}</p>
+          <div class="answers">
+            ${question.a.map((answer, aIndex) => `<button onclick="checkAnswer(${qIndex}, ${aIndex})">${answer}</button>`).join("")}
+          </div>
+          <div class="result" id="result-${qIndex}"></div>
+        </div>
+      `).join("");
+    }
+
+    function renderLesson() {
+      const lesson = lessons[currentLesson];
+      lessonContent.innerHTML = `
+        <span class="tag">${lesson.tag}</span>
+        <h2>${lesson.title}</h2>
+        <p>${lesson.explanation}</p>
+
+        <div class="code-box">${escapeHtml(lesson.code)}</div>
+
+        <div class="activity-box">
+          <div class="box-title">نشاط داخل الصف</div>
+          <p>${lesson.activity}</p>
+        </div>
+
+        <div class="quiz-box">
+          <div class="box-title">أسئلة بعد الشرح</div>
+          ${renderQuestions(lesson.questions)}
+        </div>
+
+        <div class="challenge-box">
+          <div class="box-title">تحدي صغير</div>
+          <p>${lesson.challenge}</p>
+        </div>
+
+        <button class="complete-btn" onclick="completeLesson()">
+          أنهيت الدرس
+        </button>
+      `;
+    }
+
+    function checkAnswer(questionIndex, answerIndex) {
+      const result = document.getElementById(`result-${questionIndex}`);
+      const question = lessons[currentLesson].questions[questionIndex];
+      if (answerIndex === question.c) {
+        result.style.color = "#15803d";
+        result.textContent = "إجابة صحيحة، أحسنت!";
+      } else {
+        result.style.color = "#b91c1c";
+        result.textContent = "قريب، حاول مرة أخرى.";
+      }
+    }
+
+    function completeLesson() {
+      completed.add(currentLesson);
+      updateProgress();
+      renderButtons();
+    }
+
+    function updateProgress() {
+      const percent = Math.round((completed.size / lessons.length) * 100);
+      progressNumber.textContent = percent + "%";
+      progressFill.style.width = percent + "%";
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function render() {
+      renderButtons();
+      renderLesson();
+      updateProgress();
+    }
+
+    render();
+  </script>
+</body>
+</html>
