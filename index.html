@@ -71,6 +71,43 @@
       color: white;
     }
 
+    .controls-after-lessons {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .progress-box {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .progress-text {
+      font-weight: bold;
+      color: #4f46e5;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      transition: width 0.3s ease;
+    }
+
     .nav-bottom {
       display: flex;
       justify-content: center;
@@ -184,8 +221,13 @@
     <div class="layout">
       <aside class="lessons-list">
         <h3>الوحدات التعليمية</h3>
+        <div class="progress-box">
+          <div id="progressText" class="progress-text">نسبة الإنجاز: 0%</div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
         <div id="lessonButtons"></div>
-        <button type="button" id="finalButton" class="lesson-btn main-btn">الاختبار النهائي</button>
       </aside>
 
       <section>
@@ -333,16 +375,16 @@
     ];
 
     var currentLesson = 0;
+    var completedLessons = [];
     var lessonButtons = document.getElementById("lessonButtons");
     var lessonContent = document.getElementById("lessonContent");
     var prevButton = document.getElementById("prevButton");
     var nextButton = document.getElementById("nextButton");
-    var finalButton = document.getElementById("finalButton");
+    var progressText = document.getElementById("progressText");
+    var progressFill = document.getElementById("progressFill");
 
     function clearElement(element) {
-      while (element.firstChild) {
-        element.removeChild(element.firstChild);
-      }
+      while (element.firstChild) element.removeChild(element.firstChild);
     }
 
     function createElement(tagName, className, textContent) {
@@ -362,6 +404,7 @@
 
     function renderButtons() {
       clearElement(lessonButtons);
+
       for (var i = 0; i < lessons.length; i += 1) {
         var lesson = lessons[i];
         var button = createElement("button", "lesson-btn", lesson.tag + ": " + lesson.title);
@@ -374,6 +417,23 @@
         });
         lessonButtons.appendChild(button);
       }
+
+      var controls = createElement("div", "controls-after-lessons");
+
+      var homeBtn = createElement("button", "lesson-btn", "الرئيسية");
+      homeBtn.type = "button";
+      homeBtn.addEventListener("click", function () {
+        currentLesson = 0;
+        render();
+      });
+
+      var finalBtn = createElement("button", "lesson-btn main-btn", "الاختبار النهائي");
+      finalBtn.type = "button";
+      finalBtn.addEventListener("click", showFinalTest);
+
+      controls.appendChild(homeBtn);
+      controls.appendChild(finalBtn);
+      lessonButtons.appendChild(controls);
     }
 
     function renderQuestions(parent, questions) {
@@ -381,9 +441,7 @@
       var titles = { easy: "سهل", medium: "متوسط", hard: "صعب" };
       var order = ["easy", "medium", "hard"];
 
-      for (var i = 0; i < questions.length; i += 1) {
-        levels[questions[i].level].push(questions[i]);
-      }
+      for (var i = 0; i < questions.length; i += 1) levels[questions[i].level].push(questions[i]);
 
       for (var levelIndex = 0; levelIndex < order.length; levelIndex += 1) {
         var levelName = order[levelIndex];
@@ -444,8 +502,10 @@
     }
 
     function renderLesson() {
+      markLessonCompleted(currentLesson);
       var lesson = lessons[currentLesson];
       clearElement(lessonContent);
+
       lessonContent.appendChild(createElement("span", "tag", lesson.tag));
       lessonContent.appendChild(createElement("h2", "", lesson.title));
       lessonContent.appendChild(createElement("p", "", lesson.explanation));
@@ -561,16 +621,30 @@
       result.textContent = "نتيجتك: " + score + " من " + lessons.length + " (" + percent + "%)";
     }
 
+    function markLessonCompleted(index) {
+      if (completedLessons.indexOf(index) === -1) {
+        completedLessons.push(index);
+      }
+    }
+
+    function updateProgress() {
+      var percent = Math.round((completedLessons.length / lessons.length) * 100);
+      progressText.textContent = "نسبة الإنجاز: " + percent + "%";
+      progressFill.style.width = percent + "%";
+    }
+
     function render() {
       renderButtons();
       renderLesson();
       updateNav();
+      updateProgress();
     }
 
     function validateLessonsData() {
       console.assert(Array.isArray(lessons), "lessons must be an array");
       console.assert(lessons.length >= 1, "there must be at least one lesson");
-      console.assert(typeof starterCode === "string" && starterCode.indexOf("\\n") === -1, "starterCode should be a normal string with actual newline only");
+      console.assert(typeof starterCode === "string" && starterCode.indexOf("\\n") === -1, "starterCode should contain an actual newline, not escaped slash-n text");
+
       for (var i = 0; i < lessons.length; i += 1) {
         var lesson = lessons[i];
         console.assert(typeof lesson.title === "string" && lesson.title.length > 0, "lesson title is invalid");
@@ -578,6 +652,7 @@
         console.assert(typeof lesson.code === "string", "lesson code must be a string");
         console.assert(Array.isArray(lesson.questions), "lesson questions must be an array");
         console.assert(lesson.questions.length >= 7, "lesson must include at least seven questions");
+
         var levelCount = { easy: 0, medium: 0, hard: 0 };
         for (var q = 0; q < lesson.questions.length; q += 1) {
           var question = lesson.questions[q];
@@ -603,12 +678,14 @@
       console.assert(typeof runStudentCode === "function", "runStudentCode is missing");
       console.assert(Boolean(lessonButtons), "lessonButtons element is missing");
       console.assert(Boolean(lessonContent), "lessonContent element is missing");
+      console.assert(Boolean(progressText), "progressText element is missing");
+      console.assert(Boolean(progressFill), "progressFill element is missing");
+      console.assert(typeof updateProgress === "function", "updateProgress is missing");
       console.log("tests ok");
     }
 
     nextButton.addEventListener("click", nextLesson);
     prevButton.addEventListener("click", prevLesson);
-    finalButton.addEventListener("click", showFinalTest);
 
     runSmokeTests();
     render();
