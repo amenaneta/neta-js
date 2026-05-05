@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -691,4 +691,1126 @@
     render();
   </script>
 </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>منصة تعلم HTML و CSS</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --blue: #2563eb;
+      --orange: #f97316;
+      --green: #16a34a;
+      --red: #dc2626;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --card: #ffffff;
+      --soft: #f8fafc;
+      --border: #e5e7eb;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eff6ff, #fff7ed);
+      color: var(--text);
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--blue), var(--orange));
+      color: white;
+      padding: 34px 18px;
+      text-align: center;
+      border-bottom-left-radius: 34px;
+      border-bottom-right-radius: 34px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    }
+
+    header h1 { margin: 0 0 8px; font-size: 34px; }
+    header p { margin: 0; font-size: 17px; opacity: 0.95; }
+
+    .app {
+      max-width: 1240px;
+      margin: 24px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar, .content {
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      padding: 18px;
+    }
+
+    .sidebar { position: sticky; top: 16px; }
+    .sidebar h3 { margin: 0 0 14px; color: var(--blue); }
+
+    .progress-box, .score-box {
+      background: var(--soft);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 13px;
+      margin-bottom: 14px;
+    }
+
+    .progress-title, .score-title {
+      font-weight: bold;
+      color: var(--blue);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      height: 12px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--orange));
+      transition: width 0.3s ease;
+    }
+
+    .lesson-btn, .main-btn, .answer-btn {
+      border: 0;
+      border-radius: 15px;
+      padding: 12px 14px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+
+    .lesson-btn {
+      width: 100%;
+      display: block;
+      margin: 8px 0;
+      background: #f3f4f6;
+      color: var(--text);
+      text-align: right;
+    }
+
+    .lesson-btn:hover, .answer-btn:hover, .main-btn:hover { transform: translateY(-1px); }
+    .lesson-btn.active, .main-btn { background: linear-gradient(135deg, var(--blue), var(--orange)); color: white; }
+    .lesson-btn.done::before { content: "✓ "; color: var(--green); font-weight: bold; }
+
+    .sidebar-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 18px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    h2 { color: var(--blue); margin: 0 0 10px; }
+    p { line-height: 1.85; font-size: 16px; }
+
+    .box {
+      margin-top: 16px;
+      border-radius: 20px;
+      padding: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .terms-box { background: #f8fafc; }
+    .example-box {
+      background: #111827;
+      color: #d1fae5;
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+      font-family: Consolas, monospace;
+      overflow-x: auto;
+      border: none;
+    }
+    .activity-box { background: #eef2ff; }
+    .challenge-box { background: #ecfdf5; }
+    .project-box { background: #fff7ed; }
+    .pages-box { background: #f0f9ff; }
+
+    .term {
+      color: var(--blue);
+      font-weight: bold;
+      cursor: pointer;
+      border-bottom: 1px dashed var(--blue);
+    }
+
+    .term-note {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      padding: 12px;
+      margin-top: 12px;
+      color: #1e40af;
+      display: none;
+    }
+
+    .level { margin-top: 16px; border-radius: 18px; padding: 14px; }
+    .easy { background: #ecfdf5; }
+    .medium { background: #fff7ed; }
+    .hard { background: #fee2e2; }
+
+    .question-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 16px;
+      padding: 13px;
+      margin: 10px 0;
+    }
+
+    .answers { display: grid; gap: 8px; margin-top: 8px; }
+    .answer-btn { background: white; border: 1px solid var(--border); text-align: right; color: var(--text); }
+    .result { font-weight: bold; margin-top: 8px; }
+
+    textarea {
+      width: 100%;
+      min-height: 280px;
+      direction: ltr;
+      text-align: left;
+      font-family: Consolas, monospace;
+      font-size: 15px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid #d1d5db;
+      resize: vertical;
+      background: white;
+    }
+
+    iframe {
+      width: 100%;
+      min-height: 320px;
+      background: white;
+      border: 1px solid #d1d5db;
+      border-radius: 16px;
+      margin-top: 12px;
+    }
+
+    .editor-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    .nav-bottom { display: flex; justify-content: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+
+    .final-option {
+      display: block;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      margin: 8px 0;
+      cursor: pointer;
+    }
+
+    .file-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      margin: 10px 0;
+      direction: ltr;
+      text-align: left;
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>منصة تعلم HTML و CSS</h1>
+    <p>تعلم عناصر HTML، صمم بـ CSS، ابنِ Menu، ثم أنشئ موقعًا من عدة صفحات</p>
+  </header>
+
+  <main class="app">
+    <aside class="sidebar">
+      <h3>الوحدات التعليمية</h3>
+      <div class="progress-box">
+        <div id="progressText" class="progress-title">نسبة الإنجاز: 0%</div>
+        <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+      </div>
+      <div class="score-box">
+        <div id="scoreText" class="score-title">التقييم: 0 نقطة</div>
+        <p style="margin:0;text-align:center;color:#6b7280;font-size:14px">النقاط تزيد عند الإجابات الصحيحة</p>
+      </div>
+      <div id="lessonButtons"></div>
+      <div class="sidebar-actions">
+        <button type="button" id="homeBtn" class="lesson-btn">الرئيسية</button>
+        <button type="button" id="finalBtn" class="lesson-btn main-btn">الاختبار النهائي</button>
+        <button type="button" id="resetBtn" class="lesson-btn">إعادة التقدم</button>
+      </div>
+    </aside>
+
+    <section>
+      <div id="content" class="content"></div>
+      <div class="nav-bottom">
+        <button type="button" id="prevBtn" class="main-btn">السابق</button>
+        <button type="button" id="nextBtn" class="main-btn">التالي</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+
+    const STORAGE_KEY = "htmlCssLearningPlatformProgressV2";
+
+    const glossary = {
+      HTML: "لغة بناء هيكل الصفحة. نستخدمها لإضافة العناوين والفقرات والصور والروابط والنماذج والجداول.",
+      CSS: "لغة تصميم الصفحة. نستخدمها لتغيير الألوان والخطوط والمسافات وترتيب العناصر.",
+      tag: "وسم نكتبه بين علامتي < > مثل <p> أو <h1>.",
+      element: "عنصر كامل في HTML، مثل <p>مرحبا</p>.",
+      body: "الجزء الذي يحتوي كل ما يظهر للمستخدم داخل الصفحة.",
+      head: "الجزء الذي يحتوي معلومات عن الصفحة مثل title و meta و style.",
+      nav: "قسم يحتوي على روابط التنقل داخل الموقع، ويسمى غالبًا menu أو navigation bar.",
+      menu: "قائمة روابط تساعد المستخدم على الانتقال بين صفحات الموقع.",
+      input: "حقل إدخال يكتب فيه المستخدم معلومات. له أنواع مثل text و number و email و password.",
+      form: "نموذج يجمع بيانات من المستخدم مثل الاسم أو البريد.",
+      table: "جدول لتنظيم البيانات في صفوف وأعمدة.",
+      semantic: "عناصر HTML لها معنى واضح مثل header و nav و main و section و footer.",
+      padding: "مسافة داخلية بين المحتوى وحدود العنصر.",
+      margin: "مسافة خارجية بين العنصر والعناصر المحيطة به.",
+      Flexbox: "نظام في CSS يساعد على ترتيب العناصر داخل حاوية بسهولة.",
+      selector: "المحدد الذي نختار به العنصر المراد تصميمه في CSS.",
+      property: "الخاصية التي نغيرها في CSS مثل color أو background.",
+      value: "قيمة الخاصية في CSS مثل red أو 20px."
+    };
+
+    const starterCode = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تجربتي</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #eef6ff;
+    }
+  </style>
+</head>
+<body>
+  <h1>أهلا بكم</h1>
+  <p>اكتبوا كودكم هنا</p>
+</body>
+</html>`;
+
+    const multiPageProjectGuide = `هيكل ملفات المشروع النهائي:
+
+my-site/
+  index.html
+  about.html
+  projects.html
+  contact.html
+  style.css
+  images/
+    profile.jpg
+
+الفكرة:
+1. كل صفحة HTML لها نفس الـ menu.
+2. كل الصفحات ترتبط بنفس ملف CSS.
+3. الروابط داخل menu تنقل بين الصفحات.
+4. الصفحة الرئيسية index.html هي أول صفحة تفتح في الموقع.`;
+
+    const finalProjectCode = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>موقعي الشخصي</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #eef6ff;
+      color: #1f2937;
+    }
+
+    header {
+      background: #2563eb;
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    nav {
+      background: #1e40af;
+      padding: 12px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #fed7aa;
+    }
+
+    main {
+      width: 85%;
+      margin: 25px auto;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      margin-bottom: 18px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px #ccc;
+    }
+
+    img {
+      width: 180px;
+      border-radius: 12px;
+    }
+
+    footer {
+      background: #111827;
+      color: white;
+      text-align: center;
+      padding: 18px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>موقعي الشخصي</h1>
+    <p>موقع من عدة صفحات مع قائمة تنقل</p>
+  </header>
+
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="about.html">من أنا</a>
+    <a href="projects.html">مشاريعي</a>
+    <a href="contact.html">تواصل</a>
+  </nav>
+
+  <main>
+    <section class="card">
+      <h2>أهلا بكم</h2>
+      <p>أنا طالب أتعلم بناء مواقع باستخدام HTML و CSS.</p>
+      <img src="https://via.placeholder.com/180" alt="صورة شخصية">
+    </section>
+
+    <section class="card">
+      <h2>ما الذي تعلمته؟</h2>
+      <ul>
+        <li>بناء صفحات HTML</li>
+        <li>تصميم CSS</li>
+        <li>إنشاء menu للتنقل</li>
+        <li>ربط صفحات متعددة</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>تم بناء الموقع ضمن درس HTML و CSS</p>
+  </footer>
+</body>
+</html>`;
+
+    const lessons = [
+      {
+        title: "ما هو HTML؟",
+        tag: "الوحدة 1",
+        explanation: "HTML هي اللغة التي نستخدمها لبناء هيكل صفحة الويب. من خلالها نضيف العناوين، الفقرات، الصور، الروابط، القوائم والنماذج.",
+        terms: "HTML: لغة بناء هيكل الصفحة. tag: وسم داخل < >. element: عنصر كامل. head: معلومات الصفحة. body: المحتوى الظاهر. title: عنوان التبويب. meta: معلومات إضافية للمتصفح. dir='rtl': اتجاه من اليمين لليسار. lang: يحدد لغة الصفحة.",
+        code: `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>صفحتي الأولى</title>
+</head>
+<body>
+  <h1>أهلا بكم</h1>
+  <p>هذه أول صفحة HTML.</p>
+</body>
+</html>`,
+        challenge: "ابنِ صفحة HTML تحتوي على title مناسب، عنوان رئيسي، وفقرة تعريفية عن نفسك.",
+        questions: [
+          { q: "ما وظيفة HTML؟", a: ["بناء هيكل الصفحة", "تغيير سرعة الإنترنت", "تشغيل الجهاز"], c: 0, level: "easy" },
+          { q: "أي وسم يحتوي المحتوى الظاهر؟", a: ["body", "head", "title"], c: 0, level: "easy" },
+          { q: "أين يظهر نص title؟", a: ["في تبويب المتصفح", "داخل الصورة", "داخل الزر"], c: 0, level: "medium" },
+          { q: "أي بنية صحيحة؟", a: ["<p>نص</p>", "<p>نص", "p>نص</p>"], c: 0, level: "hard" }
+        ]
+      },
+      {
+        title: "النصوص والعناوين",
+        tag: "الوحدة 2",
+        explanation: "نستخدم العناوين h1 حتى h6 لتنظيم المحتوى، ونستخدم p لكتابة الفقرات، و strong و em لإبراز النصوص.",
+        terms: "h1: العنوان الرئيسي. h2-h6: عناوين فرعية بدرجات مختلفة. p: فقرة نصية. strong: نص مهم وغامق. em: نص مائل للتأكيد. br: نزول سطر جديد. hr: خط فاصل. ترتيب العناوين يساعد على وضوح الصفحة.",
+        code: `<h1>عنوان الصفحة</h1>
+<h2>عنوان فرعي</h2>
+<p>هذه فقرة نصية داخل الصفحة.</p>
+<p>أنا أتعلم <strong>HTML</strong> و <em>CSS</em>.</p>
+<hr>
+<p>هذه فقرة بعد خط فاصل.</p>`,
+        challenge: "اكتب صفحة قصيرة عن هوايتك، تحتوي على h1 و h2 وفقرتين وكلمة بارزة باستخدام strong وكلمة مائلة باستخدام em.",
+        questions: [
+          { q: "أي وسم للعنوان الرئيسي؟", a: ["h1", "p", "img"], c: 0, level: "easy" },
+          { q: "أي وسم للفقرة؟", a: ["p", "h6", "a"], c: 0, level: "easy" },
+          { q: "ما وظيفة strong؟", a: ["إبراز نص مهم", "إضافة صورة", "إرسال نموذج"], c: 0, level: "medium" },
+          { q: "أي ترتيب أفضل؟", a: ["h1 ثم h2 ثم p", "p ثم img ثم head", "button ثم title"], c: 0, level: "hard" }
+        ]
+      },
+      {
+        title: "عناصر HTML أكثر",
+        tag: "الوحدة 3",
+        explanation: "في HTML توجد عناصر كثيرة تساعدنا على بناء صفحات أغنى: صور، روابط، فيديو، صوت، جداول، أزرار، اقتباسات وأقسام منظمة.",
+        terms: "img: إضافة صورة. src: مصدر الصورة. alt: وصف بديل للصورة. a: رابط. href: وجهة الرابط. button: زر. table: جدول. tr: صف داخل الجدول. th: خلية عنوان. td: خلية بيانات. video: إضافة فيديو. audio: إضافة صوت. blockquote: اقتباس طويل. div: صندوق عام للتجميع. span: عنصر صغير داخل النص.",
+        code: `<img src="https://via.placeholder.com/160" alt="صورة تجريبية">
+<a href="https://www.google.com" target="_blank">افتح Google</a>
+<button>اضغط هنا</button>
+
+<table border="1">
+  <tr>
+    <th>المهارة</th>
+    <th>المستوى</th>
+  </tr>
+  <tr>
+    <td>HTML</td>
+    <td>مبتدئ</td>
+  </tr>
+</table>
+
+<blockquote>التعلم خطوة بخطوة يصنع الفرق.</blockquote>`,
+        challenge: "ابنِ قسما يحتوي على صورة، رابط، زر، جدول مهارات بسيط، واقتباس قصير.",
+        questions: [
+          { q: "أي وسم لإضافة صورة؟", a: ["img", "a", "p"], c: 0, level: "easy" },
+          { q: "أي وسم لإنشاء جدول؟", a: ["table", "form", "nav"], c: 0, level: "easy" },
+          { q: "ما وظيفة alt؟", a: ["وصف بديل للصورة", "لون الزر", "حجم الخط"], c: 0, level: "medium" },
+          { q: "أي وسم يمثل خلية بيانات في جدول؟", a: ["td", "tr", "ul"], c: 0, level: "hard" }
+        ]
+      },
+      {
+        title: "القوائم والنماذج",
+        tag: "الوحدة 4",
+        explanation: "القوائم تساعدنا على ترتيب المعلومات، والنماذج تساعد المستخدم على إدخال بيانات مثل الاسم أو البريد.",
+        terms: "ul: قائمة غير مرتبة. ol: قائمة مرتبة. li: عنصر داخل القائمة. form: نموذج لجمع بيانات. input: حقل إدخال. type='text': نص. type='number': رقم. type='email': بريد. type='password': كلمة سر. checkbox: اختيار متعدد. radio: اختيار واحد. textarea: نص طويل. select: قائمة منسدلة. option: خيار داخل القائمة. label: اسم الحقل. placeholder: نص إرشادي. required: يجعل الحقل إلزاميا.",
+        code: `<ul>
+  <li>HTML</li>
+  <li>CSS</li>
+</ul>
+
+<form>
+  <label>الاسم:</label>
+  <input type="text" placeholder="اكتب اسمك" required>
+
+  <label>البريد:</label>
+  <input type="email" placeholder="example@mail.com">
+
+  <label>رسالة:</label>
+  <textarea placeholder="اكتب رسالتك"></textarea>
+
+  <label>المسار:</label>
+  <select>
+    <option>HTML</option>
+    <option>CSS</option>
+  </select>
+
+  <button type="submit">إرسال</button>
+</form>`,
+        challenge: "ابنِ نموذج تسجيل يحتوي على الاسم، العمر، البريد الإلكتروني، كلمة السر، قائمة اختيار، ورسالة قصيرة.",
+        questions: [
+          { q: "أي وسم للقائمة غير المرتبة؟", a: ["ul", "ol", "input"], c: 0, level: "easy" },
+          { q: "أي وسم لحقل إدخال؟", a: ["input", "button", "h1"], c: 0, level: "easy" },
+          { q: "ما وظيفة placeholder؟", a: ["نص إرشادي داخل الحقل", "رابط الصورة", "لون الزر"], c: 0, level: "medium" },
+          { q: "أي نوع مناسب للبريد؟", a: ["email", "number", "checkbox"], c: 0, level: "hard" }
+        ]
+      },
+      {
+        title: "العناصر الدلالية Semantic HTML",
+        tag: "الوحدة 5",
+        explanation: "العناصر الدلالية تجعل الصفحة منظمة وواضحة، لأنها تخبرنا عن وظيفة كل جزء: رأس الصفحة، القائمة، المحتوى، الأقسام، والتذييل.",
+        terms: "semantic: عناصر لها معنى واضح. header: رأس الصفحة. nav: قائمة التنقل. main: المحتوى الرئيسي. section: قسم مستقل. article: محتوى مستقل مثل مقال. aside: محتوى جانبي. footer: أسفل الصفحة. هذه العناصر تجعل الموقع منظمًا وأسهل للفهم.",
+        code: `<header>
+  <h1>موقعي</h1>
+</header>
+
+<nav>
+  <a href="#">الرئيسية</a>
+  <a href="#">من أنا</a>
+</nav>
+
+<main>
+  <section>
+    <h2>قسم التعريف</h2>
+    <p>هذا قسم داخل الصفحة.</p>
+  </section>
+</main>
+
+<footer>
+  <p>جميع الحقوق محفوظة</p>
+</footer>`,
+        challenge: "ابنِ هيكل صفحة يستخدم header و nav و main و section و footer.",
+        questions: [
+          { q: "أي عنصر يستخدم لرأس الصفحة؟", a: ["header", "footer", "td"], c: 0, level: "easy" },
+          { q: "أي عنصر يحتوي قائمة التنقل؟", a: ["nav", "img", "input"], c: 0, level: "easy" },
+          { q: "ما فائدة semantic HTML؟", a: ["تنظيم معنى الصفحة", "تغيير الإنترنت", "حذف CSS"], c: 0, level: "medium" },
+          { q: "أين نضع المحتوى الرئيسي؟", a: ["main", "head", "title"], c: 0, level: "hard" }
+        ]
+      },
+      {
+        title: "مقدمة CSS",
+        tag: "الوحدة 6",
+        explanation: "CSS هي اللغة التي نستخدمها لتصميم صفحة الويب: الألوان، الخلفيات، الخطوط، المسافات وترتيب العناصر.",
+        terms: "CSS: لغة التصميم. selector: محدد العنصر. property: الخاصية مثل color. value: القيمة مثل red. rule: قاعدة كاملة. class: تصميم مجموعة عناصر باستخدام نقطة مثل .card. id: تصميم عنصر واحد باستخدام #. hover: شكل العنصر عند مرور الماوس عليه.",
+        code: `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>مثال CSS</title>
+  <style>
+    body {
+      background: #eef6ff;
+      color: #1f2937;
+      font-family: Arial;
+      text-align: center;
+    }
+
+    h1 {
+      color: #2563eb;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>أتعلم CSS</h1>
+    <p>CSS تجعل الصفحة أجمل وأكثر ترتيبا.</p>
+  </div>
+</body>
+</html>`,
+        challenge: "صمم صفحة بسيطة: خلفية ملونة، عنوان بلون مختلف، وفقرة داخل بطاقة بيضاء.",
+        questions: [
+          { q: "ما وظيفة CSS؟", a: ["تصميم الصفحة", "بناء الهيكل", "تشغيل الخادم"], c: 0, level: "easy" },
+          { q: "أي خاصية تغير لون النص؟", a: ["color", "src", "href"], c: 0, level: "easy" },
+          { q: "ما معنى selector؟", a: ["محدد العنصر", "صورة", "رابط"], c: 0, level: "medium" },
+          { q: "أي كود CSS صحيح؟", a: ["h1 { color: red; }", "h1 color red", "<h1 color='red'>"], c: 0, level: "hard" }
+        ]
+      },
+      {
+        title: "Box Model والمسافات",
+        tag: "الوحدة 7",
+        explanation: "كل عنصر في CSS يمكن تخيله كصندوق يحتوي على المحتوى، padding، border، و margin.",
+        terms: "content: المحتوى. padding: مسافة داخلية. border: إطار. margin: مسافة خارجية. width: عرض. height: ارتفاع. border-radius: زوايا دائرية. box-shadow: ظل. الفرق المهم: padding داخل العنصر، margin خارج العنصر.",
+        code: `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Box Model</title>
+  <style>
+    body { background: #eef6ff; font-family: Arial; }
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 30px auto;
+      border: 2px solid #2563eb;
+      border-radius: 12px;
+      width: 70%;
+      text-align: center;
+      box-shadow: 0 4px 12px #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>بطاقة تعريف</h2>
+    <p>هذا مثال على Box Model.</p>
+  </div>
+</body>
+</html>`,
+        challenge: "صمم بطاقة تعريف تحتوي على عنوان وفقرة، مع خلفية بيضاء، إطار، مسافة داخلية، وزوايا دائرية وظل.",
+        questions: [
+          { q: "ما معنى padding؟", a: ["مسافة داخلية", "رابط", "صورة"], c: 0, level: "easy" },
+          { q: "ما معنى margin؟", a: ["مسافة خارجية", "لون النص", "اسم وسم"], c: 0, level: "easy" },
+          { q: "ما وظيفة border-radius؟", a: ["تدوير الزوايا", "تكبير الخط", "إضافة صورة"], c: 0, level: "medium" },
+          { q: "في .card { padding: 20px; } أين تكون المسافة؟", a: ["داخل البطاقة", "خارج البطاقة", "داخل الرابط"], c: 0, level: "hard" }
+        ]
+      },
+      {
+        title: "Flexbox وترتيب العناصر",
+        tag: "الوحدة 8",
+        explanation: "Flexbox يساعدنا على ترتيب العناصر بسهولة في صف أو عمود والتحكم في توزيعها ومحاذاتها داخل الصفحة.",
+        terms: "Flexbox: نظام ترتيب عناصر. container: العنصر الأب. items: العناصر الداخلية. display: flex: تفعيل Flexbox. flex-direction: اتجاه العناصر. justify-content: توزيع أفقي. align-items: محاذاة عمودية. gap: مسافة بين العناصر. flex-wrap: نزول العناصر لسطر جديد عند الحاجة.",
+        code: `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Flexbox</title>
+  <style>
+    body { font-family: Arial; background: #f8fafc; text-align: center; }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+    .box {
+      background: #2563eb;
+      color: white;
+      padding: 25px;
+      border-radius: 12px;
+      width: 120px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ترتيب العناصر باستخدام Flexbox</h1>
+  <div class="container">
+    <div class="box">HTML</div>
+    <div class="box">CSS</div>
+    <div class="box">Menu</div>
+  </div>
+</body>
+</html>`,
+        challenge: "أنشئ 3 بطاقات مرتبة بجانب بعض باستخدام Flexbox، مع مسافة واضحة بينها، واجعلها تنزل لسطر جديد عند الحاجة.",
+        questions: [
+          { q: "أي خاصية تفعل Flexbox؟", a: ["display: flex", "color", "src"], c: 0, level: "easy" },
+          { q: "ما وظيفة gap؟", a: ["مسافة بين العناصر", "رابط", "صورة"], c: 0, level: "easy" },
+          { q: "ما وظيفة justify-content؟", a: ["ترتيب أفقي", "تغيير النص", "إضافة صورة"], c: 0, level: "medium" },
+          { q: "في الكود display: flex; أين نكتبه؟", a: ["داخل CSS للحاوية", "داخل src", "داخل alt"], c: 0, level: "hard" }
+        ]
+      },
+      {
+        title: "بناء Menu للموقع",
+        tag: "الوحدة 9",
+        explanation: "الـ Menu أو شريط التنقل يساعد الزائر على الانتقال بين صفحات الموقع. غالبا نستخدم nav وفي داخله روابط a، ثم نصممها باستخدام CSS.",
+        terms: "menu: قائمة تنقل بين صفحات الموقع. nav: عنصر دلالي يحتوي روابط التنقل. a: رابط داخل القائمة. href: اسم الصفحة التي سينتقل إليها الرابط. text-decoration: إزالة الخط من الرابط. hover: تغيير شكل الرابط عند مرور الماوس. active: كلاس يمكن استخدامه لتمييز الصفحة الحالية.",
+        code: `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu</title>
+  <style>
+    body { margin: 0; font-family: Arial; background: #eef6ff; }
+
+    nav {
+      background: #2563eb;
+      padding: 14px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 12px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #fed7aa;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="about.html">من أنا</a>
+    <a href="projects.html">مشاريعي</a>
+    <a href="contact.html">تواصل</a>
+  </nav>
+
+  <h1>هذه صفحة فيها Menu</h1>
+</body>
+</html>`,
+        challenge: "ابنِ menu يحتوي على 4 روابط: الرئيسية، من أنا، مشاريعي، تواصل. صممه بلون خلفية وروابط واضحة وتأثير hover.",
+        questions: [
+          { q: "أي عنصر نستخدم لقائمة التنقل؟", a: ["nav", "table", "input"], c: 0, level: "easy" },
+          { q: "أي وسم نستخدم للرابط؟", a: ["a", "p", "img"], c: 0, level: "easy" },
+          { q: "ما وظيفة href في menu؟", a: ["تحديد الصفحة التي ننتقل إليها", "تغيير لون الرابط", "إضافة صورة"], c: 0, level: "medium" },
+          { q: "أي خاصية تزيل الخط من الرابط؟", a: ["text-decoration: none;", "padding", "border-radius"], c: 0, level: "hard" }
+        ]
+      },
+      {
+        title: "موقع من عدة صفحات",
+        tag: "الوحدة 10",
+        explanation: "الموقع الحقيقي غالبا لا يكون صفحة واحدة فقط. يمكن أن يحتوي على index.html و about.html و projects.html و contact.html، وكل صفحة ترتبط بنفس menu ونفس ملف CSS.",
+        terms: "multi-page website: موقع من عدة صفحات. index.html: الصفحة الرئيسية. about.html: صفحة التعريف. projects.html: صفحة المشاريع. contact.html: صفحة التواصل. style.css: ملف CSS مشترك بين الصفحات. link: وسم يربط HTML بملف CSS خارجي. folder: مجلد لتنظيم الملفات. relative path: مسار نسبي مثل images/photo.jpg.",
+        code: `<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>الرئيسية</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="about.html">من أنا</a>
+    <a href="projects.html">مشاريعي</a>
+    <a href="contact.html">تواصل</a>
+  </nav>
+
+  <main>
+    <h1>مرحبا في موقعي</h1>
+    <p>هذه الصفحة الرئيسية.</p>
+  </main>
+</body>
 </html>
+
+/* style.css */
+body { font-family: Arial; background: #eef6ff; }
+nav { background: #2563eb; padding: 14px; text-align: center; }
+nav a { color: white; text-decoration: none; margin: 0 10px; }`,
+        challenge: "اكتب خطة ملفات لموقع من 4 صفحات، ثم ابنِ الصفحة الرئيسية مع menu يربط الصفحات ببعضها.",
+        questions: [
+          { q: "ما اسم الصفحة الرئيسية غالبا؟", a: ["index.html", "style.css", "image.png"], c: 0, level: "easy" },
+          { q: "أي ملف نستخدمه للتصميم المشترك؟", a: ["style.css", "about.html", "contact.html"], c: 0, level: "easy" },
+          { q: "ما وظيفة link في head؟", a: ["ربط ملف CSS", "إضافة جدول", "إرسال نموذج"], c: 0, level: "medium" },
+          { q: "إذا كان الرابط href='about.html' ماذا يحدث؟", a: ["ينتقل لصفحة من أنا", "يغير لون النص", "يحذف الصفحة"], c: 0, level: "hard" }
+        ]
+      },
+      {
+        title: "المشروع النهائي: موقع كامل من عدة صفحات",
+        tag: "الوحدة 11",
+        explanation: "في هذه الوحدة يطبق الطلاب كل ما تعلموه لبناء موقع كامل من عدة صفحات، فيه menu، عناصر HTML متنوعة، وتصميم CSS مشترك.",
+        terms: "مشروع نهائي: تطبيق عملي شامل. menu: قائمة تنقل. صفحات متعددة: index و about و projects و contact. header: رأس الصفحة. main: المحتوى الرئيسي. section: قسم مستقل. card: بطاقة محتوى. footer: أسفل الصفحة. style.css: ملف تصميم مشترك. التصميم الجيد يحتاج ألوان متناسقة، مسافات، ترتيب، وخط واضح.",
+        code: finalProjectCode,
+        extra: multiPageProjectGuide,
+        challenge: "ابنِ موقعا من 4 صفحات: الرئيسية، من أنا، مشاريعي، تواصل. يجب أن تحتوي كل صفحة على نفس menu ونفس ملف CSS، وأن تستخدم عناصر HTML متنوعة مثل img و table و form و footer.",
+        questions: [
+          { q: "ما الهدف من المشروع النهائي؟", a: ["بناء موقع من عدة صفحات", "حفظ المصطلحات فقط", "حذف HTML"], c: 0, level: "easy" },
+          { q: "أي جزء يمثل قائمة التنقل؟", a: ["nav", "li", "input"], c: 0, level: "easy" },
+          { q: "ما فائدة style.css؟", a: ["تصميم مشترك لكل الصفحات", "صورة شخصية", "نموذج تسجيل"], c: 0, level: "medium" },
+          { q: "أفضل طريقة لتطوير المشروع هي؟", a: ["نبني صفحة صفحة ونختبر الروابط", "نكتب كل شيء عشوائيا", "نحذف الوسوم"], c: 0, level: "hard" }
+        ]
+      }
+    ];
+
+    let currentLesson = 0;
+    const state = loadState();
+
+    const lessonButtons = document.getElementById("lessonButtons");
+    const content = document.getElementById("content");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const homeBtn = document.getElementById("homeBtn");
+    const finalBtn = document.getElementById("finalBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const progressText = document.getElementById("progressText");
+    const progressFill = document.getElementById("progressFill");
+    const scoreText = document.getElementById("scoreText");
+
+    function loadState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) return JSON.parse(saved);
+      return { completed: [], score: 0, answered: {}, code: {} };
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function clearElement(element) {
+      while (element.firstChild) element.removeChild(element.firstChild);
+    }
+
+    function createElement(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined) el.textContent = text;
+      return el;
+    }
+
+    function addBox(parent, className, title, text) {
+      const box = createElement("div", "box " + className);
+      box.appendChild(createElement("h3", "", title));
+      const p = createElement("p");
+      p.innerHTML = wrapGlossary(text);
+      box.appendChild(p);
+      const note = createElement("div", "term-note", "اضغط على مصطلح أزرق لعرض شرحه هنا.");
+      box.appendChild(note);
+      parent.appendChild(box);
+      enableGlossary(box);
+      return box;
+    }
+
+    function addCodeBox(parent, title, code) {
+      const box = createElement("div", "box pages-box");
+      box.appendChild(createElement("h3", "", title));
+      box.appendChild(createElement("pre", "file-card", code));
+      parent.appendChild(box);
+    }
+
+    function wrapGlossary(text) {
+      let result = text;
+      Object.keys(glossary).forEach(function(term) {
+        const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp("\\b" + safeTerm + "\\b", "g");
+        result = result.replace(regex, "<span class='term' data-term='" + term + "'>" + term + "</span>");
+      });
+      return result;
+    }
+
+    function enableGlossary(scope) {
+      scope.querySelectorAll(".term").forEach(function(el) {
+        el.addEventListener("click", function() {
+          const term = el.getAttribute("data-term");
+          const note = scope.querySelector(".term-note");
+          note.style.display = "block";
+          note.textContent = term + ": " + glossary[term];
+        });
+      });
+    }
+
+    function markCompleted(index) {
+      if (!state.completed.includes(index)) {
+        state.completed.push(index);
+        saveState();
+      }
+    }
+
+    function updateProgress() {
+      const percent = Math.round((state.completed.length / lessons.length) * 100);
+      progressText.textContent = "نسبة الإنجاز: " + percent + "%";
+      progressFill.style.width = percent + "%";
+      scoreText.textContent = "التقييم: " + state.score + " نقطة";
+    }
+
+    function renderButtons() {
+      clearElement(lessonButtons);
+      lessons.forEach(function(lesson, index) {
+        const prefix = state.completed.includes(index) ? "✓ " : "";
+        const btn = createElement("button", "lesson-btn", prefix + lesson.tag + ": " + lesson.title);
+        if (index === currentLesson) btn.classList.add("active");
+        btn.addEventListener("click", function() {
+          currentLesson = index;
+          render();
+        });
+        lessonButtons.appendChild(btn);
+      });
+    }
+
+    function renderLesson() {
+      markCompleted(currentLesson);
+      const lesson = lessons[currentLesson];
+      clearElement(content);
+
+      content.appendChild(createElement("span", "tag", lesson.tag));
+      content.appendChild(createElement("h2", "", lesson.title));
+      content.appendChild(createElement("p", "", lesson.explanation));
+      addBox(content, "terms-box", "شرح المصطلحات", lesson.terms);
+      content.appendChild(createElement("pre", "box example-box", lesson.code));
+      if (lesson.extra) addCodeBox(content, "خطة ملفات المشروع", lesson.extra);
+      addBox(content, "challenge-box", "تحدي", lesson.challenge);
+
+      const qBox = createElement("div", "box");
+      qBox.appendChild(createElement("h3", "", "أسئلة بمستويات"));
+      renderQuestions(qBox, lesson.questions);
+      content.appendChild(qBox);
+
+      if (currentLesson === lessons.length - 1) {
+        addBox(content, "project-box", "متطلبات المشروع النهائي", "الموقع النهائي يجب أن يحتوي على: 4 صفحات HTML، ملف style.css، menu مشترك، صورة، جدول، نموذج تواصل، footer، وألوان ومسافات واضحة.");
+        renderEditor(finalProjectCode);
+      } else {
+        renderEditor(starterCode);
+      }
+    }
+
+    function renderQuestions(parent, questions) {
+      const groups = { easy: [], medium: [], hard: [] };
+      const titles = { easy: "سهل", medium: "متوسط", hard: "صعب" };
+      questions.forEach(q => groups[q.level].push(q));
+      ["easy", "medium", "hard"].forEach(function(level) {
+        const section = createElement("div", "level " + level);
+        section.appendChild(createElement("h3", "", titles[level]));
+        groups[level].forEach(function(q, qIndex) {
+          const globalId = currentLesson + "-" + level + "-" + qIndex;
+          const card = createElement("div", "question-card");
+          card.appendChild(createElement("p", "", q.q));
+          const answers = createElement("div", "answers");
+          q.a.forEach(function(ans, aIndex) {
+            const btn = createElement("button", "answer-btn", ans);
+            btn.addEventListener("click", function() {
+              const result = card.querySelector(".result");
+              const correct = aIndex === q.c;
+              result.style.color = correct ? "#15803d" : "#b91c1c";
+              result.textContent = correct ? "إجابة صحيحة، أحسنت!" : "قريب، حاول مرة أخرى.";
+              if (correct && !state.answered[globalId]) {
+                state.answered[globalId] = true;
+                state.score += level === "easy" ? 5 : level === "medium" ? 10 : 15;
+                saveState();
+                updateProgress();
+              }
+            });
+            answers.appendChild(btn);
+          });
+          card.appendChild(answers);
+          card.appendChild(createElement("div", "result", ""));
+          section.appendChild(card);
+        });
+        parent.appendChild(section);
+      });
+    }
+
+    function getCodeKey() { return "lesson-" + currentLesson; }
+
+    function renderEditor(defaultCode) {
+      const box = createElement("div", "box runner-box");
+      box.appendChild(createElement("h3", "", "مكان كتابة الكود"));
+      box.appendChild(createElement("p", "", "اكتب كود HTML و CSS هنا ثم اضغط تشغيل. يتم حفظ عملك تلقائيا داخل المتصفح."));
+      const textarea = document.createElement("textarea");
+      textarea.id = "studentCode";
+      textarea.value = state.code[getCodeKey()] || defaultCode;
+      textarea.addEventListener("input", function() {
+        state.code[getCodeKey()] = textarea.value;
+        saveState();
+      });
+      box.appendChild(textarea);
+      const actions = createElement("div", "editor-actions");
+      const runBtn = createElement("button", "main-btn", "تشغيل ومعاينة الكود");
+      runBtn.addEventListener("click", runCode);
+      const saveBtn = createElement("button", "main-btn", "حفظ العمل");
+      saveBtn.addEventListener("click", function() {
+        state.code[getCodeKey()] = textarea.value;
+        saveState();
+        alert("تم حفظ العمل داخل المتصفح");
+      });
+      actions.appendChild(runBtn);
+      actions.appendChild(saveBtn);
+      box.appendChild(actions);
+      const frame = document.createElement("iframe");
+      frame.id = "preview";
+      box.appendChild(frame);
+      content.appendChild(box);
+    }
+
+    function runCode() {
+      const code = document.getElementById("studentCode").value;
+      document.getElementById("preview").srcdoc = code;
+      state.code[getCodeKey()] = code;
+      saveState();
+    }
+
+    function showFinalTest() {
+      clearElement(content);
+      content.appendChild(createElement("h2", "", "الاختبار النهائي"));
+      content.appendChild(createElement("p", "", "أجب عن سؤال واحد من كل وحدة، ثم اضغط عرض النتيجة."));
+      const box = createElement("div", "box final-box");
+      lessons.forEach(function(lesson, index) {
+        const q = lesson.questions[0];
+        const card = createElement("div", "question-card");
+        card.appendChild(createElement("p", "", "السؤال " + (index + 1) + ": " + q.q));
+        q.a.forEach(function(ans, aIndex) {
+          const label = createElement("label", "final-option");
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = "final-" + index;
+          input.value = String(aIndex);
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(" " + ans));
+          card.appendChild(label);
+        });
+        box.appendChild(card);
+      });
+      const btn = createElement("button", "main-btn", "عرض النتيجة");
+      btn.addEventListener("click", checkFinalTest);
+      box.appendChild(btn);
+      const result = createElement("div", "result", "");
+      result.id = "finalResult";
+      box.appendChild(result);
+      content.appendChild(box);
+      prevBtn.style.display = "none";
+      nextBtn.style.display = "none";
+    }
+
+    function checkFinalTest() {
+      let score = 0;
+      lessons.forEach(function(lesson, index) {
+        const selected = document.querySelector("input[name='final-" + index + "']:checked");
+        if (selected && Number(selected.value) === lesson.questions[0].c) score += 1;
+      });
+      const percent = Math.round((score / lessons.length) * 100);
+      const result = document.getElementById("finalResult");
+      result.style.color = percent >= 60 ? "#15803d" : "#b91c1c";
+      result.textContent = "نتيجتك: " + score + " من " + lessons.length + " (" + percent + "%)";
+    }
+
+    function updateNav() {
+      prevBtn.style.display = currentLesson === 0 ? "none" : "inline-block";
+      nextBtn.style.display = currentLesson === lessons.length - 1 ? "none" : "inline-block";
+    }
+
+    function render() {
+      renderButtons();
+      renderLesson();
+      updateNav();
+      updateProgress();
+    }
+
+    prevBtn.addEventListener("click", function() {
+      if (currentLesson > 0) {
+        currentLesson -= 1;
+        render();
+      }
+    });
+
+    nextBtn.addEventListener("click", function() {
+      if (currentLesson < lessons.length - 1) {
+        currentLesson += 1;
+        render();
+      }
+    });
+
+    homeBtn.addEventListener("click", function() {
+      currentLesson = 0;
+      render();
+    });
+
+    finalBtn.addEventListener("click", showFinalTest);
+
+    resetBtn.addEventListener("click", function() {
+      if (confirm("هل تريد إعادة التقدم وحذف الأعمال المحفوظة؟")) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    });
+
+    console.assert(Array.isArray(lessons), "lessons must be an array");
+    console.assert(lessons.length === 11, "there should be 11 lessons");
+    console.assert(typeof render === "function", "render must exist");
+    console.assert(typeof runCode === "function", "runCode must exist");
+    console.assert(typeof saveState === "function", "saveState must exist");
+    console.assert(typeof loadState === "function", "loadState must exist");
+    console.log("tests ok");
+
+    render();
+  </script>
+</body>
+</html>
+
